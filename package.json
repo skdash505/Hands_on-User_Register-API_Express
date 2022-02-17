@@ -2,9 +2,27 @@
   "name": "userregister",
   "version": "1.0.0",
   "description": "User Register's Server Side application as MEAN Stack.",
-  "main": "app.js",
+  "main": "./src/bin/www",
   "scripts": {
+    "start": "node ./src/bin/www",
+    "dev": "nodemon ./src/bin/www",
     "test": "npm test"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "mongoose": "^6.2.2",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   },
   "author": "Santanu Dash <skdash505@gmail.com>",
   "license": "MIT",
