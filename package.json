@@ -1,0 +1,25 @@
+{
+  "name": "userregister",
+  "version": "1.0.0",
+  "description": "User Register's Server Side application as MEAN Stack.",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Santanu Dash <skdash505@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skdash505/User_Register_Express.git"
+  },
+  "keywords": [
+    "promise",
+    "async",
+    "UnhandledPromiseRejectionWarning",
+    "PromiseRejectionHandledWarning"
+  ],
+  "bugs": {
+    "url": "https://github.com/skdash505/User_Register_Express.git/issues"
+  },
+  "homepage": "https://github.com/skdash505/User_Register_Express.git#readme"
+}
