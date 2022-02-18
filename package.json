@@ -5,19 +5,21 @@
   "main": "./src/bin/www",
   "scripts": {
     "start": "node ./src/bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/bin/www",
-    "test": "npm test"
+    "debug": "nodemon --inspect ./src/bin/www",
+    "build": "echo \"Error: no build specified\" && exit 1"
   },
   "dependencies": {
+    "body-parser": "^1.19.2",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "mongoose": "^6.2.2",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
-    "body-parser": "^1.19.2",
-    "cors": "^2.8.5",
-    "mongoose": "^6.2.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"
   },

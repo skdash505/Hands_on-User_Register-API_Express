@@ -4,24 +4,15 @@
 		"info": {
 			"title": "UserRegister Express API with Swagger",
 			"version": "0.1.0",
-			"description": "This is a User Register CRUD API application made with Express and documented with Swagger",
-			"license": {
-				"name": "MIT",
-				"url": "https://spdx.org/licenses/MIT.html"
-			},
-			"contact": {
-				"name": "Express",
-				"url": "https://expressjs.com/",
-				"email": "info@email.com"
-			}
+			"description": "This is a User Register CRUD API application made with Express and documented with Swagger"
 		},
 		"servers": [
 			{
-				"url": "http://localhost:3000/user/"
+				"url": ""
 			}
 		]
 	},
 	"apis": [
-		"./routes/books.js"
+		"./user.js"
 	]
 }
