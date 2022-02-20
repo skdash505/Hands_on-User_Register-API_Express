@@ -12,6 +12,55 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\src\\bin\\www"
-        }
+        },
+        {
+            "type": "node", 
+            "request": "launch",
+            "name": "nodemon",
+            "runtimeExecutable": "nodemon",
+            "program": "${workspaceFolder}src/bin/www",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "env": {
+                "debug": "app:*",
+            }
+        },
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "UserRegister",
+        //     "program": "${workspaceFolder}\\src\\bin\\www",
+        //     // "runtimeVersion": "4.6.2",
+        //     "protocol": "legacy",
+        //     "port": 8080
+        //     //"runtimeExecutable": "/home/user/.nvm/versions/node/v4.6.2/bin/node"
+        // },
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "NodeMon Run",
+        //     "runtimeExecutable": "nodemon",
+        //     "program": "${workspaceRoot}\\src\\bin\\www",
+        //     "restart": true,
+        //     "console": "integratedTerminal",
+        //     "internalConsoleOptions": "neverOpen",
+        //     // "runtimeVersion": "4.6.2",
+        //     "protocol": "legacy",
+        //     "port": 8080
+        // },
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "DEBUG",
+        //     "runtimeExecutable": "nodemon",
+        //     "program": "${workspaceFolder}\\src\\bin\\www",
+        //     "restart": true,
+        //     "console": "integratedTerminal",
+        //     "internalConsoleOptions": "neverOpen",
+        //     // "runtimeVersion": "4.6.2",
+        //     "protocol": "legacy",
+        //     "port": 8080
+        // }
     ]
 }
