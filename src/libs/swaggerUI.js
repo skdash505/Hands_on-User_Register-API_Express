@@ -10,7 +10,7 @@ const swaggerOptions = require("./swaggerUI.json");
 swaggerOptions.host = apiPaths.url;
 swaggerOptions.basePath = apiPaths._base;
 router.use(apiPaths.swaggerUI, swaggerUi.serve, swaggerUi.setup(swaggerOptions, { explorer: true }));
-console.log("swaggerSpec: ",swaggerOptions);
+// console.log("swaggerSpec: ",swaggerOptions);
 
 // swaggerOptions.definition.servers = [
 //     // {url: apiPaths.url},
