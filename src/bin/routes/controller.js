@@ -1,4 +1,4 @@
-var apiPaths = require('../libs/apiPaths');
+var config = require('config');
 
 var express = require('express');
 var router = express.Router();
@@ -13,7 +13,7 @@ var router = express.Router();
  *       200:
  *         description: respond with a resource as Controller.
  */
-router.get(apiPaths.controllers._base, function(req, res, next) {
+router.get(config.apiPaths.controllers._base, function(req, res, next) {
     console.log("controller initiated");
     res.render('index', { title: 'Controller', content: 'respond with a resource as Controller' });
     res.set({message: "hi"});
@@ -28,7 +28,7 @@ router.get(apiPaths.controllers._base, function(req, res, next) {
  *       200:
  *         description: Returns a mysterious string.
  */
-router.post(apiPaths.controllers._base, function(req, res, next) {
+router.post(config.apiPaths.controllers._base, function(req, res, next) {
     res.send({message: "submitted successfully"});
 });
 
@@ -41,7 +41,7 @@ router.post(apiPaths.controllers._base, function(req, res, next) {
  *       200:
  *         description: respond with a resource as Controller as Id .
  */
-router.get(apiPaths.controllers._withId, function(req, res, next) {
+router.get(config.apiPaths.controllers._withId, function(req, res, next) {
     console.log("controller with id initiated");
     res.render('index', { title: 'Controller '+ req.params.id, content: 'respond with a resource as Controller as Id :'+ req.params.id });
     res.set({message: "hi"+ req.params.id});
@@ -49,7 +49,7 @@ router.get(apiPaths.controllers._withId, function(req, res, next) {
 });
 
 /* GET users listing for other services */
-router.use(apiPaths.controllers.register, require('../controllers/register.controller'));
+router.use(config.apiPaths.register, require('./register.controller'));
 
 
 module.exports = router;
