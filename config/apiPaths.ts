@@ -1,13 +1,17 @@
 
 export function apiPaths() {
     return {
-        demo: "/demo",
-        _base: "/userAPi",
+        _base: "/devApi",
+        user: "/user",
+        session: "/session",
         swaggerUI: "/swaggerUi",
+
         register: "/register",
-        controllers: {
-            _base: "/controller",
-            _withId: "/controller/:id"
-        }
+        controllers: "/controller",
+        controllers_id: "/controller/:id",
+        
+        healthcheck: "/healthcheck",
+        demo: "/demo",
+        
     }
 };

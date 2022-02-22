@@ -1,10 +1,10 @@
 // src/middleware/validateRequest.ts
 
-import { AnySchema } from "yup";
+import { ObjectSchema } from "yup";
 import { Request, Response, NextFunction } from "express";
-import log from "../logger";
+import log from "../utils/log";
 
-const validate = (schema: AnySchema) => async (
+const validate = (schema: ObjectSchema) => async (
   req: Request,
   res: Response,
   next: NextFunction

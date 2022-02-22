@@ -1,4 +1,4 @@
-/ src/utils/jwt.utils.ts
+// src/utils/authenticate/jwt.utils.ts
 
 import jwt from "jsonwebtoken";
 import config from "config";

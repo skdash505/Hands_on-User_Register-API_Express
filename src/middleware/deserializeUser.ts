@@ -1,9 +1,8 @@
 // src/middleware/deserializeUser.ts
-
 import { get } from "lodash";
 import { Request, Response, NextFunction } from "express";
-import { decode } from "../utils/jwt.utils";
-// import { reIssueAccessToken } from "../service/session.service";
+import { decode } from "../utils/auth/jwt.utils";
+import { reIssueAccessToken } from "../service/session.service";
 
 const deserializeUser = async (
   req: Request,

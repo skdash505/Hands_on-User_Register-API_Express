@@ -5,8 +5,8 @@
   "description": "User Register's Server Side application as MEAN Stack.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --config nodemon.json src/bin/server.ts",
-    "debug": "nodemon --config nodemon.json --inspect ./src/bin/server.ts",
+    "dev": "nodemon --config nodemon.json src/bin/app.server.ts",
+    "debug": "nodemon --config nodemon.json --inspect ./src/bin/app.server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "echo \"Error: no build specified\" && exit 1",
     "start": "node ./src/bin/www"
@@ -48,6 +48,7 @@
     "@types/yup": "^0.29.13",
     "nodemon": "^2.0.15",
     "ts-node": "^10.5.0",
+    "tslib": "^2.3.1",
     "typescript": "^4.5.5"
   },
   "author": "Santanu Dash <skdash505@gmail.com>",
