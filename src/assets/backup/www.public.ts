@@ -1,5 +1,5 @@
 import { Express } from "express";
-import log from "../utils/log";
+import log from "../../utils/log";
 
 export default function (app: Express, port: number, host: string): boolean {
   try {

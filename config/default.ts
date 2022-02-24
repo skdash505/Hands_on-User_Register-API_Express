@@ -1,13 +1,15 @@
 // config/default.ts
 
-import {apiPaths} from "./apiPaths"
+import apiPaths from "./apiPaths.json"
+// import {apiPaths} from "./apiPaths"
 
 export default {
   port: 3000,
   host: "localhost",
   dbUri: "mongodb://localhost:27017/userRegister",
 
-  apiPaths: apiPaths(),
+  apiPaths: apiPaths,
+  // apiPaths: apiPaths(),
   
   saltWorkFactor: 10,
   accessTokenTtl: "15m",

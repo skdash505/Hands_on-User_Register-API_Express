@@ -5,6 +5,7 @@ export function apiPaths() {
         user: "/user",
         session: "/session",
         swaggerUI: "/swaggerUi",
+        // swaggerUI: "/swagger-ui",
 
         register: "/register",
         controllers: "/controller",

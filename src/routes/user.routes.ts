@@ -1,7 +1,7 @@
 var apiPaths = require('config').apiPaths;
 
 import { Express, Router, Request, Response, NextFunction } from "express";
-import { deserializeUser, requiresUser, validate } from "../../middleware";
+import { deserializeUser, requiresUser, validate } from "../middleware";
 
 
 export default async function (app: Express, router: Router) {

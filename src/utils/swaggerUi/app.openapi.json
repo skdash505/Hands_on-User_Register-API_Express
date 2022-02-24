@@ -1,0 +1,185 @@
+{
+  "definition": {
+  "openapi": "3.0.1",
+  "info": {
+    "title": "UserRegister Express API with Swagger",
+		"version": "0.1.0",
+		"description": "This is a User Register CRUD API application made with Express and documented with Swagger",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:3000/devApi/"
+    },
+    {
+      "url": "http://localhost:3000/devApi/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "demo",
+      "description": "Demo Api",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "paths": {
+    "/demo": {
+      "get": {
+        "tags": [
+          "demo"
+        ],
+        "summary": "demo show",
+        "operationId": "get demo",
+        "requestBody": {
+          "description": "demo",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/demo"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/demo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid parameters supplied",
+            "content": {}
+          },
+          "404": {
+            "description": "demo not found",
+            "content": {}
+          },
+          "405": {
+            "description": "Validation exception",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "read:demo"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "demo": {
+        "type": "object",
+        "properties": {
+          
+        },
+        "xml": {
+          "name": "User"
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "userStatus": {
+            "type": "integer",
+            "description": "User Status",
+            "format": "int32"
+          }
+        },
+        "xml": {
+          "name": "User"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Tag"
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemas": {
+      "userAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "userAuth": []
+    }
+  ]
+},
+  "apis": ["../../routes/*.ts", "../../schema/*.ts"]
+}
