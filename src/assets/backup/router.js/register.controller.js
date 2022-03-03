@@ -1,8 +1,10 @@
+var apiPaths = require('config').apiPaths;
+
 var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get(apiPaths.register, function(req, res, next) {
     // res.render('index', { title: 'Registered Successfully', content: 'Registered Successfully. ' });
     if (!req.body.userRegisterData){
         res.status(404);
