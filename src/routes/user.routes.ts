@@ -2,26 +2,36 @@
 
 var apiPaths = require('config').apiPaths;
 
-import { Express, Router, Request, Response, NextFunction } from "express";
-import { deserializeUser, requiresUser, validate } from "../middleware";
+import { Express, Router } from "express";
+import { validateResourses } from "../middleware";
+import { createUserHandler, updateUserHandler, getAllUserHandler, getUserbyIdHandler, deleteUserHandler } from "../controllers/user.controller";
+import { createUserSchema, UpdateUserSchema, UserIDSchema } from "../schema/user.schema";
 
 
 export default async function (app: Express, router: Router) {
-    app.get(apiPaths._base+apiPaths.user, function (req: Request, res: Response, next: NextFunction) {
-        if (!req.body.userRegisterData) {
-            res.status(404);
-            res.json({
-                data: null,
-                message: "required Request body not found"
-            })
-        } else {
-            res.send({
-                data: {
-                    _default: 0,
-                    _base: undefined
-                }, message: "success"
-            })
-        }
-    });
+
+    app.post(
+        apiPaths._base + apiPaths.user,
+        validateResourses(createUserSchema),
+        createUserHandler);
+
+    app.get(
+        apiPaths._base + apiPaths.user,
+        getAllUserHandler);
+
+    app.get(
+        apiPaths._base + apiPaths.user_with_id,
+        validateResourses(UserIDSchema),
+        getUserbyIdHandler);
+
+    app.put(
+        apiPaths._base + apiPaths.user_with_id,
+        validateResourses(UpdateUserSchema),
+        updateUserHandler);
+
+    app.delete(
+        apiPaths._base + apiPaths.user_with_id,
+        validateResourses(UserIDSchema),
+        deleteUserHandler);
 
 }
