@@ -1,3 +1,5 @@
+// src/utils/swaggerUi/index.ts
+
 import { Express, Request, Response, NextFunction } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"
@@ -7,7 +9,7 @@ import { version } from "../../../package.json"
 import log from "../log";
 var apiPaths = require('config').apiPaths;
 import config from "config";
-// const apiPaths = config.get("apiPaths");
+// const apiPaths = config.get<{}>("apiPaths");
 
 
 function swaggerDocs(app: Express, port: number) {
@@ -42,7 +44,7 @@ function setupSwaggerUi(app: Express, port: Number) {
 
 
   const swaggerOptions = require("./app.swaggerUI.json");
-  let serverUrl = `http://${config.get("host")}:${config.get("port")}`;
+  let serverUrl = `http://${config.get<string>("host")}:${config.get<number>("port")}`;
   let serverBasePath = `${apiPaths._base}`;
   // let serverBaseUrl = `${serverUrl}${apiPaths._base}`;
   swaggerOptions.host = serverUrl;

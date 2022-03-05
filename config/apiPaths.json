@@ -1,7 +1,9 @@
 {
         "_base": "/devApi",
         "user": "/user",
+        "user_with_id": "/userbyId",
         "session": "/session",
+        "session_with_id": "/sessionbyId",
         "swaggerUI": "/swaggerUi",
 
         "register": "/register",

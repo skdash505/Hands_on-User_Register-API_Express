@@ -1,3 +1,5 @@
+// src/routes/session.routes.ts
+
 var apiPaths = require('config').apiPaths;
 
 import { Express, Router, Request, Response, NextFunction } from "express";

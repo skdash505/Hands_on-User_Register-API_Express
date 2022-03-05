@@ -1,4 +1,4 @@
-// src/db/connect.ts
+// src/utils/db/connect.ts
 
 import mongoose from "mongoose";
 import config from "config";
@@ -6,7 +6,7 @@ import log from "../log";
 
 function connect() {
 //   const dbUri = config.dbUri as string;
-  const dbUri = config.get("dbUri") as string;
+  const dbUri = config.get<string>("dbUri");
 
   return mongoose
     .connect(dbUri, {

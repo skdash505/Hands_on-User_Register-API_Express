@@ -1,4 +1,4 @@
-// src/utils/logger/index.ts
+// src/utils/log/index.ts
 
 import logger from "pino";
 import dayjs from "dayjs";

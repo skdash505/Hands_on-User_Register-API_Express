@@ -1,9 +1,9 @@
-// src/utils/authenticate/jwt.utils.ts
+// src/utils/auth/jwt.utils.ts
 
 import jwt from "jsonwebtoken";
 import config from "config";
 
-const privateKey = config.get("privateKey") as string;
+const privateKey = config.get<string>("privateKey");
 
 export function sign(object: Object, options?: jwt.SignOptions | undefined) {
   return jwt.sign(object, privateKey, options);

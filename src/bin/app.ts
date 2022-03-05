@@ -1,4 +1,4 @@
-// src/bin/server.ts
+// src/bin/app.ts
 
 import express, { Express, Router } from "express";
 import http from "http";
@@ -8,7 +8,7 @@ import config from "config";
 import log from "../utils/log";
 import swaggerDocs from "../utils/swaggerUi";
 
-import { deserializeUser } from "../middleware";
+// import { deserializeUser } from "../middleware";
 
 import connect from "../utils/db/connect";
 import Routers from "../routes/index.routes";
@@ -18,9 +18,9 @@ import temp from "./shared/temp.shared";
 class App {
   private httpServer: any
   private httpRouter: any
-  private port = config.get("port") as number;
-  private host = config.get("host") as string;
-  private apiPaths = config.get("apiPaths") as {};
+  private port = config.get<number>("port");
+  private host = config.get<string>("host");
+  private apiPaths = config.get<{}>("apiPaths");
 
   constructor() {
     this.httpServer = express()
