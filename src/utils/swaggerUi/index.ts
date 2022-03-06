@@ -6,7 +6,10 @@ import swaggerUi from "swagger-ui-express"
 
 import { version } from "../../../package.json"
 
-import log from "../log";
+import path from "path";
+import { setDevLog, level} from "../log";
+const filename = path.basename(__filename);
+
 var apiPaths = require('config').apiPaths;
 import config from "config";
 // const apiPaths = config.get<{}>("apiPaths");
@@ -33,7 +36,7 @@ function setupSwaggerUi(app: Express, port: Number) {
   //     { explorer: true }
   //   )
   // );
-  // log.info(`Swagger available at http://localhost:${port}${apiPaths.swaggerUI}/index.html`);
+  // setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths.swaggerUI}/index.html`);
 
 
   // // swaggerUi Default in JSON format
@@ -60,7 +63,7 @@ function setupSwaggerUi(app: Express, port: Number) {
       { explorer: true }
     )
   );
-  log.info(`Swagger available at http://localhost:${port}${apiPaths._base + apiPaths.swaggerUI}`);
+  setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths._base + apiPaths.swaggerUI}`);
 
 
   // swaggerUi App in JSON format
@@ -85,7 +88,7 @@ function setupOpenApi(app: Express, port: Number) {
   //     { explorer: true }
   //   )
   // );
-  // log.info(`Swagger available at http://localhost:${port}${apiPaths.swaggerUI}/index.html`);
+  // setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths.swaggerUI}/index.html`);
 
   // // OpenApi Default in JSON format
   // app.get(apiPaths.swaggerUI + ".json", (req: Request, res: Response) => {
@@ -115,7 +118,7 @@ function setupOpenApi(app: Express, port: Number) {
       { explorer: true }
     )
   );
-  log.info(`Swagger available at http://localhost:${port}${apiPaths._base + apiPaths.swaggerUI}`);
+  setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths._base + apiPaths.swaggerUI}`);
 
   // OpenApi App in JSON format
   app.get(apiPaths._base + apiPaths.swaggerUI + ".json", (req: Request, res: Response) => {

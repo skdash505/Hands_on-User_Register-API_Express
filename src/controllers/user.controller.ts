@@ -4,14 +4,17 @@ import { Request, Response } from "express";
 import { isEmpty, omit } from "lodash";
 import { createUser, deleteUser, getAllUser, getUserbyId, updateUser } from "../service/user.service";
 import { CreateUserInput, UpdateUserInput, UserIDInput } from "../schema/user.schema";
-import log from "../utils/log";
+
+import path from "path";
+import { setDevLog, level} from "../utils/log";
+const filename = path.basename(__filename);
 
 export async function createUserHandler(req: Request<any, any, CreateUserInput["body"]>, res: Response) {
   try {
     const user = await createUser(req.body);
     return res.status(200).send(omit(user.toJSON(), "password"));
   } catch (error: any) {
-    log.error("Error at User Controller is:", error.message);
+    setDevLog(filename, level.ERROR, `Error at User Controller is: ${error.message}`);
 
     if (error.message.includes("duplicate key")) {
       let duplicateMail = error.message.split("email: \"")[1].split("\" }")[0];
@@ -54,7 +57,7 @@ export async function getAllUserHandler(req: Request, res: Response) {
     }
 
   } catch (error: any) {
-    log.error("Error at User Controller is:", error.message);
+    setDevLog(filename, level.ERROR, `Error at User Controller is: ${error.message}`);
     return res.status(404).send(error.message);
   }
 }
@@ -72,7 +75,7 @@ export async function getUserbyIdHandler(req: Request<any, any, any, UserIDInput
       });
     }
   } catch (error: any) {
-    log.error("Error at User Controller is:", error.message);
+    setDevLog(filename, level.ERROR, `Error at User Controller is: ${error.message}`);
     return res.status(409).send(error.message);
   }
 }
@@ -106,7 +109,7 @@ export async function updateUserHandler(req: Request<any, any, UpdateUserInput["
     // console.log(user);
     // return res.status(200).send(omit(user, "password"));
   } catch (error: any) {
-    log.error("Error at User Controller is:", error.message);
+    setDevLog(filename, level.ERROR, `Error at User Controller is: ${error.message}`);
   }
 }
 
@@ -127,7 +130,7 @@ export async function deleteUserHandler(req: Request<any, any, any, UserIDInput[
       });
     }
   } catch (error: any) {
-    log.error("Error at User Controller is:", error.message);
+    setDevLog(filename, level.ERROR, `Error at User Controller is: ${error.message}`);
     return res.status(409).send(error.message);
   }
 }

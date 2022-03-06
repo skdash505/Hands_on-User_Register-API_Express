@@ -2,7 +2,10 @@
 
 import mongoose from "mongoose";
 import config from "config";
-import log from "../log";
+
+import path from "path";
+import { setDevLog, level} from "../log";
+const filename = path.basename(__filename);
 
 function connect() {
 //   const dbUri = config.dbUri as string;
@@ -14,10 +17,10 @@ function connect() {
     //   useUnifiedTopology: true,
     })
     .then(() => {
-      log.info("Database connected");
+      setDevLog(filename, level.INFO, `Database connected`);
     })
     .catch((error) => {
-      log.error("db error", error);
+      setDevLog(filename, level.FATAL, `db error ${error}`);
       process.exit(1);
     });
 }
