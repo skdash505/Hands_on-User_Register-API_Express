@@ -1,5 +1,6 @@
 // config/default.ts
 
+import path from "path"
 import apiPaths from "./apiPaths.json"
 // import {apiPaths} from "./apiPaths"
 
@@ -10,6 +11,8 @@ export default {
 
   apiPaths: apiPaths,
   // apiPaths: apiPaths(),
+
+  loggerPath: path.join(__dirname, '../logs'),
   
   saltWorkFactor: 10,
   accessTokenTtl: "15m",

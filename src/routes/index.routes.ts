@@ -2,8 +2,11 @@
 
 import { Express, Router, Request, Response, NextFunction } from "express";
 
+import path from "path";
+import { setDevLog, level} from "../utils/log";
+const filename = path.basename(__filename);
+
 var apiPaths = require('config').apiPaths;
-import log from "../utils/log";
 
 import controllerRoutes from "./controller.routes";
 import demoRoutes from "./demo.routes";
@@ -24,10 +27,8 @@ export default async function (app: Express, router: Router) {
     await userRoutes(app, router);
     await sessionRouter(app, router);
 
-    log.info("EndPoints as Routrs Setup Successed.");
+    setDevLog(filename, level.INFO, `EndPoints as Routrs Setup Successed.`);
   } catch (error) {
-    log.error("Error Occured during EndPoint Setup: " + error);
-    // } finally {
-    //   log.warn("EndPoints as Routrs Setup End.");
+    setDevLog(filename, level.ERROR, `Error Occured during EndPoint Setup: ${error}`);
   }
 }

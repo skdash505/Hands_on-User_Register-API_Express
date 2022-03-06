@@ -1,13 +1,16 @@
 // src/bin/server.ts
 
 import app from './app';
-import log from '../utils/log';
+import path from 'path';
+
+import { setDevLog, level} from "../utils/log";
+const filename = path.basename(__filename);
 
 
 const server = new app().startServer()
-  .then(port => log.info(`Server running on port ${port}`))
+  .then(port => (setDevLog(filename, level.DEBUG, `Server running on port ${port}`)))
   .catch(error => {
-    console.log(error)
+    setDevLog(filename, level.FATAL, error);
     process.exit(1);
   });
 
