@@ -25,18 +25,7 @@ export const createUserSchema = object({
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, "body.passwordConfirmation">;
 
 export const UpdateUserSchema = object({
-    // params: object({
-    // query: object({
-    //     _id: string({
-    //         required_error: "UserId is required"
-    //     })
-    // }),
     body: object({
-        // Will be commented
-        // _id: string({
-        //     required_error: "UserId is required"
-        // }),
-        // will be commented
         name: string({
             required_error: "Name is required"
         }),
