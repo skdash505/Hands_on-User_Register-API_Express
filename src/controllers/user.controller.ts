@@ -12,7 +12,8 @@ const filename = path.basename(__filename);
 export async function createUserHandler(req: Request<any, any, CreateUserInput["body"]>, res: Response) {
   try {
     const user = await createUser(req.body);
-    return res.status(200).send(omit(user.toJSON(), "password"));
+    return res.status(200).send(user);
+    // return res.status(200).send(omit(user.toJSON(), "password"));
   } catch (error: any) {
     setDevLog(filename, level.ERROR, `Error at User Controller is: ${error.message}`);
 

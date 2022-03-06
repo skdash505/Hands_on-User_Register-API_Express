@@ -1,5 +1,8 @@
-
 // src/controller/session.controller.ts
+
+import { Request, Response } from "express";
+import { isEmpty, omit } from "lodash";
+import { validatePassword } from "../service/user.service";
 
 export async function createUserSessionHandler(req: Request, res: Response) {
     // validate the email and password
