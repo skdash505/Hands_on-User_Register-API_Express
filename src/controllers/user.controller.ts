@@ -4,7 +4,10 @@ import { Request, Response } from "express";
 import { isEmpty, omit } from "lodash";
 import { createUser, deleteUser, getAllUser, getUserbyId, updateUser } from "../service/user.service";
 import { CreateUserInput, UpdateUserInput, UserIDInput } from "../schema/user.schema";
-import log from "../utils/log";
+
+import path from "path";
+import parentLogger from "../utils/log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
 
 export async function createUserHandler(req: Request<any, any, CreateUserInput["body"]>, res: Response) {
   try {

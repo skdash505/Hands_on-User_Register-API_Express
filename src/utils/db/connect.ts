@@ -2,7 +2,10 @@
 
 import mongoose from "mongoose";
 import config from "config";
-import log from "../log";
+
+import path from "path";
+import parentLogger from "../log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
 
 function connect() {
 //   const dbUri = config.dbUri as string;

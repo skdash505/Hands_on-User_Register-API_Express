@@ -3,7 +3,10 @@
 import { Request, Response, NextFunction} from "express";
 import { AnyZodObject } from "zod";
 
-import log from "../utils/log";
+
+import path from "path";
+import parentLogger from "../utils/log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
 
 const validateResourses = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
     try {

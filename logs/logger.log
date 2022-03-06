@@ -1,0 +1,30 @@
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mapp.ts: Express App initiated.[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mapp.ts: MiddleWare Setup Done.[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mapp.ts: Server listing at http://localhost:3000[39m
+[33mWARN[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mapp.ts: Server is Up[39m
+[34mDEBUG[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mapp.ts: Listening on port 3000[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mserver.ts: Server running on port 3000[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mindex.routes.ts: EndPoints as Routrs Setup Successed.[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mconnect.ts: Database connected[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mindex.ts: Swagger available at http://localhost:3000/devApi/swaggerUi[39m
+[32mINFO[39m [2022-03-06 T(16:28:10) +05:30] (ExpressJs Logs): [36mapp.ts: Server Setup Done.[39m
+[37mUSERLVL[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mapp.ts: Express App initiated.[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mapp.ts: MiddleWare Setup Done.[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mapp.ts: Server listing at http://localhost:3000[39m
+[33mWARN[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mapp.ts: Server is Up[39m
+[34mDEBUG[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mapp.ts: Listening on port 3000[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mserver.ts: Server running on port 3000[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mindex.routes.ts: EndPoints as Routrs Setup Successed.[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mconnect.ts: Database connected[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mindex.ts: Swagger available at http://localhost:3000/devApi/swaggerUi[39m
+[32mINFO[39m [2022-03-06 T(16:32:51) +05:30] (ExpressJs Logs): [36mapp.ts: Server Setup Done.[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mapp.ts: Express App initiated.[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mapp.ts: MiddleWare Setup Done.[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mapp.ts: Server listing at http://localhost:3000[39m
+[33mWARN[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mapp.ts: Server is Up[39m
+[34mDEBUG[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mapp.ts: Listening on port 3000[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mserver.ts: Server running on port 3000[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mindex.routes.ts: EndPoints as Routrs Setup Successed.[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mconnect.ts: Database connected[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mindex.ts: Swagger available at http://localhost:3000/devApi/swaggerUi[39m
+[32mINFO[39m [2022-03-06 T(16:53:43) +05:30] (ExpressJs Logs): [36mapp.ts: Server Setup Done.[39m

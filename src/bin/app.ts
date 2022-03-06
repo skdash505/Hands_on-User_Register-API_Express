@@ -4,8 +4,10 @@ import express, { Express, Router } from "express";
 import http from "http";
 
 import path from "path";
+import parentLogger from "../utils/log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
+
 import config from "config";
-import log from "../utils/log";
 import swaggerDocs from "../utils/swaggerUi";
 
 // import { deserializeUser } from "../middleware";
@@ -73,7 +75,7 @@ class App {
             var bind = typeof addr === 'string'
               ? 'pipe ' + addr
               : 'port ' + addr.port;
-            log.trace('Listening on ' + bind);
+            log.debug('Listening on ' + bind);
             // debugger;
             return this.setupServer();
           })

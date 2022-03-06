@@ -1,7 +1,10 @@
 // src/bin/server.ts
 
 import app from './app';
-import log from '../utils/log';
+
+import path from "path";
+import parentLogger from "../utils/log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
 
 
 const server = new app().startServer()

@@ -6,7 +6,11 @@ import swaggerUi from "swagger-ui-express"
 
 import { version } from "../../../package.json"
 
-import log from "../log";
+
+import path from "path";
+import parentLogger from "../log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
+
 var apiPaths = require('config').apiPaths;
 import config from "config";
 // const apiPaths = config.get<{}>("apiPaths");

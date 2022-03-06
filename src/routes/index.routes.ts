@@ -3,7 +3,10 @@
 import { Express, Router, Request, Response, NextFunction } from "express";
 
 var apiPaths = require('config').apiPaths;
-import log from "../utils/log";
+
+import path from "path";
+import parentLogger from "../utils/log";
+const log = parentLogger.child({ filename: path.basename(__filename) });
 
 import controllerRoutes from "./controller.routes";
 import demoRoutes from "./demo.routes";
