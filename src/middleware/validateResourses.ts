@@ -1,11 +1,11 @@
 // src/middleware/validateResourses.ts
 
+import path from "path";
+import { setDevLog, level } from "../utils/log";
+const filename = path.basename(__filename);
+
 import { Request, Response, NextFunction} from "express";
 import { AnyZodObject } from "zod";
-
-import path from "path";
-import { setDevLog, level} from "../utils/log";
-const filename = path.basename(__filename);
 
 const validateResourses = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
     try {

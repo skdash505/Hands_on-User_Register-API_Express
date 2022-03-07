@@ -1,13 +1,19 @@
 // src/model/user.model.ts
 
+import path from "path";
+import { setDevLog, level } from "../utils/log";
+const filename = path.basename(__filename);
+
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import config from "config";
 
-export interface UserDocument extends mongoose.Document {
+export interface UserInputs {
   email: string;
   name: string;
   password: string;
+}
+export interface UserDocument extends UserInputs, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -23,31 +29,39 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.pre("save", async function (next) {
-  let user = this as UserDocument;
+  try {
+    let user = this as UserDocument;
 
-  // only hash the password if it has been modified (or is new)
-  if (!user.isModified("password")) return next();
+    // only hash the password if it has been modified (or is new)
+    if (!user.isModified("password")) return next();
 
-  // Random additional data
-  const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
+    // Random additional data
+    const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
+    const hash = await bcrypt.hashSync(user.password, salt);
 
-  const hash = await bcrypt.hashSync(user.password, salt);
+    // Replace the password with the hash
+    user.password = hash;
 
-  // Replace the password with the hash
-  user.password = hash;
-
-  return next();
+    return next();
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at preSave is: ${error.message}`);
+    throw new Error(error);
+  }
 });
 
 // Used for logging in
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string
-) {
-  const user = this as UserDocument;
-
-  return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
+): Promise<boolean> {
+  try {
+    const user = this as UserDocument;
+    return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at comparePassword is: ${error.message}`);
+    throw new Error(error);
+  }
 };
 
-const User = mongoose.model<UserDocument>("User", UserSchema);
+const UserModel = mongoose.model<UserDocument>("User", UserSchema);
 
-export default User;
+export default UserModel;

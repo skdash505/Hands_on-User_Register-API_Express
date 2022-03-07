@@ -46,6 +46,9 @@ testem.log
 #log files
 *.log
 
+#Key files
+*.key
+
 # System Files
 .DS_Store
 Thumbs.db

@@ -1,10 +1,10 @@
 // src/routes/index.routes.ts
 
-import { Express, Router, Request, Response, NextFunction } from "express";
-
 import path from "path";
-import { setDevLog, level} from "../utils/log";
+import { setDevLog, masterLog, level } from "../utils/log";
 const filename = path.basename(__filename);
+
+import { Express, Router, Request, Response, NextFunction } from "express";
 
 var apiPaths = require('config').apiPaths;
 
@@ -28,7 +28,8 @@ export default async function (app: Express, router: Router) {
     await sessionRouter(app, router);
 
     setDevLog(filename, level.INFO, `EndPoints as Routrs Setup Successed.`);
-  } catch (error) {
-    setDevLog(filename, level.ERROR, `Error Occured during EndPoint Setup: ${error}`);
+  } catch (error: any) {
+    masterLog.fatal(`Error at Index.Routes is: ${error.message}`);
+    throw new Error(error);
   }
 }
