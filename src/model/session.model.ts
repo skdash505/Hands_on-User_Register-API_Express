@@ -4,10 +4,12 @@ import mongoose from "mongoose";
 import { string } from "zod";
 import { UserDocument } from "./user.model";
 
-export interface SchemaDocument extends mongoose.Document {
+export interface SessionInputs {
   user: UserDocument["_id"];
   valid: boolean;
   userAgent: string;
+}
+export interface SessionDocument extends SessionInputs, mongoose.Document {  
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,6 +23,6 @@ const SessionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Session = mongoose.model<UserDocument>("Session", SessionSchema);
+const Session = mongoose.model<SessionDocument>("Session", SessionSchema);
 
 export default Session;
