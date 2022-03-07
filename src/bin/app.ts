@@ -12,7 +12,7 @@ import { setDevLog, level } from "../utils/log";
 import config from "config";
 
 // Import Custom MiddleWares
-// import { deserializeUser } from "../middleware";
+import { deserializeUser } from "../middleware";
 
 //Import Essential components
 import swaggerDocs from "../utils/swaggerUi";
@@ -54,7 +54,7 @@ class App {
       this.Server.use(require('helmet')());
 
       // Using Custom MiddleWares
-      // await this.Server.use(deserializeUser);
+      await this.Server.use(deserializeUser);
 
       setDevLog(this.filename, level.INFO, "MiddleWare Setup Done.");
     } catch (error) {

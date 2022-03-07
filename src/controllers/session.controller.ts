@@ -10,7 +10,7 @@ import { Request, Response } from "express";
 import { isEmpty, omit } from "lodash";
 import { validatePassword } from "../service/user.service";
 import { signJwt } from "../utils/auth/jwt.utils";
-import { createSession } from "../service/session.service";
+import { createSession, getAllSessions } from "../service/session.service";
 import { SessionInput } from "../schema/session.schema";
 
 // Create a UserSession
@@ -57,24 +57,24 @@ export async function createUserSessionHandler(req: Request<any, any, SessionInp
     }
 
     // send refresh & access token back
-    if (accessToken) {
+    if (accessToken && refreshToken) {
       return res
         .status(200)
-        // .cookie(
-        //   "accessToken", accessToken,
-        //   {
-        //     maxAge: 10 * 60 * 1000,
-        //     httpOnly: true
-        //   })
-        // .cookie(
-        //   "refreshToken", refreshToken,
-        //   {
-        //     expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-        //     httpOnly: true
-        //   })
         .send({
           message: `Token generated Successfully`,
-          data: {}
+          data: {
+            // accessToken: accessToken,
+            // refreshToken: refreshToken
+          }
+        });
+    } else if (accessToken && !refreshToken) {
+      return res
+        .status(200)
+        .send({
+          message: `Token generated Successfully`,
+          data: {
+            // accessToken: accessToken
+          }
         });
     } else {
       return res.status(405).send({
@@ -88,62 +88,16 @@ export async function createUserSessionHandler(req: Request<any, any, SessionInp
   }
 }
 
-// Get a UserSession
+// find a UserSession
 export async function getUserSessionHandler(req: Request, res: Response) {
   try {
     // validate the email and password
-    const user = await validatePassword(req.body);
-    if (!user) {
-      return res.status(401).send("Invalid username or password");
-    }
-
-    // Create a session
-    const session = await createSession(user._id, req.get("user-agent") || "");
-    console.log(session);
-    console.log(session._id);
-
-    // create access token
-    const accessToken = signJwt(
-      { ...user, session: session._id },
-      { expiresIn: config.get("accessTokenTtl") } // 15 minutes
-    );
-
-    // create refresh token
-    const refreshToken = signJwt(
-      { ...user, session: session._id },
-      { expiresIn: config.get("refreshTokenTtl") } // 1 year
-    );
-
-    // send refresh & access token back
-    if (accessToken && refreshToken) {
-      return res
-        .status(200)
-        .cookie(
-          "accessToken", accessToken,
-          {
-            maxAge: 10 * 60 * 1000,
-            httpOnly: true
-          })
-        .cookie(
-          "refreshToken", refreshToken,
-          {
-            expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-            httpOnly: true
-          })
-        .send({
-          message: `Token generated Successfully`,
-          data: {
-            sessionId: session._id
-          }
-        });
-    } else {
-      return res.status(405).send({
-        message: `Failed to generate Token`,
-        data: {}
-      });
-    }
+    const userId = await res.locals.user._id;
+    const sessions = await getAllSessions({user: userId, valid: true})
+    return res.status(200).send(sessions);
+    
   } catch (error: any) {
-    setDevLog(filename, level.FATAL, `Error at createUserSessionHandler is: ${error.message}`);
+    setDevLog(filename, level.FATAL, `Error at getUserSessionHandler is: ${error.message}`);
     return res.status(409).send(error.message);
   }
 }

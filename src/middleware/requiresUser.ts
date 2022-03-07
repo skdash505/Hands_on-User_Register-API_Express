@@ -6,7 +6,8 @@ const requiresUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = get(req, "user");
+  const user = res.locals.user;
+  // const user = get(res, "user");
 
   if (!user) {
     return res.sendStatus(403);

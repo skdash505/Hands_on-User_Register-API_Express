@@ -4,6 +4,7 @@ import { setDevLog, level } from "../utils/log";
 const filename = path.basename(__filename);
 
 import config from "config";
+import { FilterQuery } from "mongoose";
 import SessionModel, { SessionDocument } from "../model/session.model";
 import { UserDocument } from "../model/user.model";
 import { signJwt } from "../utils/auth/jwt.utils";
@@ -19,11 +20,10 @@ export async function createSession(userId: string, userAgent: string) {
   }
 }
 
-// get a UserSession
-export async function getSession(userId: string, userAgent: string) {
+// find a UserSession
+export async function getAllSessions(query: FilterQuery<SessionDocument>) {
   try {
-    const session = await SessionModel.create({ user: userId, userAgent });
-    return session.toJSON();
+    return SessionModel.find(query).lean();
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at createSession is: ${error.message}`);
     throw new Error(error);

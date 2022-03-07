@@ -38,17 +38,20 @@ export function signJwt(object: Object, options?: jwt.SignOptions | undefined) {
   }
 }
 
-export function verifyJwt(token: string) {
+export function verifyJwt(token: string, options?: jwt.VerifyOptions) {
   try {
-    const decoded = jwt.verify(token, privateKey);
+    const decoded = jwt.verify(token, privateKey, {
+      ...(options && options),
+      algorithms:['RS256']
+    });
     setDevLog(filename, level.INFO, `jwt Token Verified successfully`);
     return { valid: true, expired: false, decoded };
   } catch (error: any) {
-    setDevLog(filename, level.ERROR, `jwt Token expired ${error}`);
+    setDevLog(filename, level.ERROR, `Error at verifyJwt is ${error}`);
     return {
       valid: false,
       // We will use expired to see if we should reissue another token
-      expired: error.message.include(`jwt Token expired`),
+      expired: error.message.includes(`jwt expired`),
       decoded: null,
     };
   }

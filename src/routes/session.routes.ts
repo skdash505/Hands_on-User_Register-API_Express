@@ -7,7 +7,7 @@ const filename = path.basename(__filename);
 var apiPaths = require('config').apiPaths;
 
 import { Express, Router } from "express";
-import { validateResourses } from "../middleware";
+import { deserializeUser, requiresUser, validateResourses } from "../middleware";
 import { createUserSessionHandler, getUserSessionHandler } from "../controllers/session.controller";
 import { SessionSchema } from "../schema/session.schema";
 
@@ -22,7 +22,7 @@ export default async function (app: Express, router: Router) {
 
         app.get(
             apiPaths._base + apiPaths.session,
-            validateResourses(SessionSchema),
+            requiresUser,
             getUserSessionHandler);
 
     } catch (error: any) {
