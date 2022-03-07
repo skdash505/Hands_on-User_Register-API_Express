@@ -23,6 +23,8 @@ export const createUserSchema = object({
     })
 });
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, "body.passwordConfirmation">;
+// export const UserSchema = object({
+// export type UserInput = Omit<TypeOf<typeof UserSchema>, "body.passwordConfirmation">;
 
 export const UpdateUserSchema = object({
     body: object({
@@ -41,9 +43,15 @@ export const UpdateUserSchema = object({
     }).refine((data: any) => data.password === data.passwordConfirmation,{
         message: "Password do not match",
         path: ["passwordConfirmation"]
+    }),
+    query: object({
+        _id: string({
+            required_error: "UserId is required"
+        })
     })
 });
 export type UpdateUserInput = Omit<TypeOf<typeof UpdateUserSchema>, "body.passwordConfirmation">;
+
 
 export const UserIDSchema = object({
     // params: object({
