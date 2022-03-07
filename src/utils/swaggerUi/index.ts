@@ -15,10 +15,10 @@ import config from "config";
 // const apiPaths = config.get<{}>("apiPaths");
 
 
-function swaggerDocs(app: Express, port: number) {
+function swaggerDocs(app: Express, serverUrl: string) {
 try{
-  setupSwaggerUi(app, port);
-  // setupOpenApi(app, port);
+  setupSwaggerUi(app, serverUrl);
+  // setupOpenApi(app, serverUrl);
 } catch (error: any) {
   masterLog.fatal(`Error at swaggerDocs is: ${error.message}`);
   throw new Error(error);
@@ -27,7 +27,7 @@ try{
 
 export default swaggerDocs;
 
-function setupSwaggerUi(app: Express, port: Number) {
+function setupSwaggerUi(app: Express, serverUrl: string) {
   try {
     // // swaggerUi Default page
     // app.use(
@@ -39,7 +39,7 @@ function setupSwaggerUi(app: Express, port: Number) {
     //     { explorer: true }
     //   )
     // );
-    // setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths.swaggerUI}/index.html`);
+    // setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths.swaggerUI}/index.html`);
 
 
     // // swaggerUi Default in JSON format
@@ -50,7 +50,6 @@ function setupSwaggerUi(app: Express, port: Number) {
 
 
     const swaggerOptions = require("./app.swaggerUI.json");
-    let serverUrl = `http://${config.get<string>("host")}:${config.get<number>("port")}`;
     let serverBasePath = `${apiPaths._base}`;
     // let serverBaseUrl = `${serverUrl}${apiPaths._base}`;
     swaggerOptions.host = serverUrl;
@@ -66,7 +65,7 @@ function setupSwaggerUi(app: Express, port: Number) {
         { explorer: true }
       )
     );
-    setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths._base + apiPaths.swaggerUI}`);
+    setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths._base + apiPaths.swaggerUI}`);
 
 
     // swaggerUi App in JSON format
@@ -82,7 +81,7 @@ function setupSwaggerUi(app: Express, port: Number) {
 }
 
 
-function setupOpenApi(app: Express, port: Number) {
+function setupOpenApi(app: Express, serverUrl: string) {
   try {
     // // OpenApi Default page
     // app.use(
@@ -93,7 +92,7 @@ function setupOpenApi(app: Express, port: Number) {
     //     { explorer: true }
     //   )
     // );
-    // setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths.swaggerUI}/index.html`);
+    // setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths.swaggerUI}/index.html`);
 
     // // OpenApi Default in JSON format
     // app.get(apiPaths.swaggerUI + ".json", (req: Request, res: Response) => {
@@ -123,7 +122,7 @@ function setupOpenApi(app: Express, port: Number) {
         { explorer: true }
       )
     );
-    setDevLog(filename, level.INFO, `Swagger available at http://localhost:${port}${apiPaths._base + apiPaths.swaggerUI}`);
+    setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths._base + apiPaths.swaggerUI}`);
 
     // OpenApi App in JSON format
     app.get(apiPaths._base + apiPaths.swaggerUI + ".json", (req: Request, res: Response) => {

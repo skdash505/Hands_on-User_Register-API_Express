@@ -22,17 +22,19 @@ import catchError from "./shared/catch.error";
 import temp from "./shared/temp.shared";
 
 class App {
-  private httpServer: any
-  private httpRouter: any
+  private Server: any;
+  private Router: any;
+  private protocol = config.get<string>("protocol");
   private port = config.get<number>("port");
   private host = config.get<string>("host");
+  private serverUrl = config.get<string>("serverUrl");
   private apiPaths = config.get<{}>("apiPaths");
   private filename = path.basename(__filename);
 
   constructor() {
     // Initiated Application
-    this.httpServer = express()
-    this.httpRouter = Router()
+    this.Server = express()
+    this.Router = Router()
 
     setDevLog(this.filename, level.INFO, `\n\n\t\t\t\t\t\tExpress App initiated.`);
 
@@ -44,15 +46,15 @@ class App {
     try {
       setDevLog(this.filename, level.INFO, "Stup MiddleWare Started.");
       // Using Express's MiddleWares
-      this.httpServer.use(express.json());
-      this.httpServer.use(express.urlencoded({ extended: false }));
+      this.Server.use(express.json());
+      this.Server.use(express.urlencoded({ extended: false }));
       // Import and use MiddleWares
-      this.httpServer.use(require('cookie-parser')());
-      this.httpServer.use(require('cors')());
-      this.httpServer.use(require('helmet')());
+      this.Server.use(require('cookie-parser')());
+      this.Server.use(require('cors')());
+      this.Server.use(require('helmet')());
 
       // Using Custom MiddleWares
-      // await this.httpServer.use(deserializeUser);
+      // await this.Server.use(deserializeUser);
 
       setDevLog(this.filename, level.INFO, "MiddleWare Setup Done.");
     } catch (error) {
@@ -65,12 +67,12 @@ class App {
     try {
       setDevLog(this.filename, level.INFO, "Starting the Server.");
       return new Promise((resolve, reject) => {
-        var server = http.createServer(this.httpServer);
+        var server = http.createServer(this.Server);
         // Listen on provided port, on all network interfaces.
         server.listen(
           this.port, this.host,
           () => {
-            setDevLog(this.filename, level.INFO, `Server listing at http://${this.host}:${this.port}`);
+            setDevLog(this.filename, level.INFO, `Server listing at ${this.serverUrl}`);
             resolve(this.port);
           })
           // Event listener for HTTP server "listening" event.
@@ -121,26 +123,26 @@ class App {
       setDevLog(this.filename, level.INFO, "Server Setup Started.");
 
       // Initating staticPages
-      this.httpServer.use(express.static(path.join(__dirname, './public')));
+      this.Server.use(express.static(path.join(__dirname, './public')));
 
       // view engine setup
-      this.httpServer.set('views', path.join(__dirname, './views'));
-      this.httpServer.set('view engine', 'pug');
+      this.Server.set('views', path.join(__dirname, './views'));
+      this.Server.set('view engine', 'pug');
 
       //All end points atteched as Router
-      await Routers(this.httpServer, this.httpRouter);
+      await Routers(this.Server, this.Router);
 
       // Connection to Database established
       await connect();
 
       //SwaggerUi initalized
-      await swaggerDocs(this.httpServer, this.port);
+      await swaggerDocs(this.Server, this.serverUrl);
 
       //Some essential middleware used
-      await temp(this.httpServer);
+      await temp(this.Server);
 
       //Handel unavailable End-Points
-      await catchError(this.httpServer);
+      await catchError(this.Server);
 
       setDevLog(this.filename, level.INFO, "Server Setup Done.");
     } catch (error) {

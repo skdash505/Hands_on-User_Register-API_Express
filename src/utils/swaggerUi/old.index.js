@@ -7,7 +7,7 @@ const swaggerUi = require('swagger-ui-express');
 
 const swaggerOptions = require("./swaggerUI.json");
 
-let serverUrl = `http://${config.host}:${config.port}`;
+let serverUrl = `https://${config.host}:${config.port}`;
 let serverBasePath = `${apiPaths._base}`;
 // let serverBaseUrl = `${serverUrl}${apiPaths._base}`;
 

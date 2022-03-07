@@ -5,8 +5,10 @@ import apiPaths from "./apiPaths.json"
 // import {apiPaths} from "./apiPaths"
 
 export default {
-  port: 3000,
+  protocol: "http",
   host: "localhost",
+  port: 3000,
+  serverUrl: `http://localhost:3000`,
   dbUri: "mongodb://localhost:27017/userRegister",
 
   apiPaths: apiPaths,
