@@ -14,29 +14,35 @@ import { createUserSchema, UpdateUserSchema, UserIDSchema } from "../schema/user
 
 export default async function (app: Express, router: Router) {
     try {
+
+        // Create New User
         app.post(
             apiPaths._base + apiPaths.user,
             validateResourses(createUserSchema),
             createUserHandler);
 
-        app.get(
-            apiPaths._base + apiPaths.user,
-            getAllUserHandler);
-
+        // All user Details by Id
         app.get(
             apiPaths._base + apiPaths.user_with_id,
             validateResourses(UserIDSchema),
             getUserbyIdHandler);
 
+        // Update User Details
         app.put(
             apiPaths._base + apiPaths.user_with_id,
             validateResourses(UpdateUserSchema),
             updateUserHandler);
 
+        // Delete a User
         app.delete(
             apiPaths._base + apiPaths.user_with_id,
             validateResourses(UserIDSchema),
             deleteUserHandler);
+            
+        // Get All Users
+        app.get(
+            apiPaths._base + apiPaths.allUser,
+            getAllUserHandler);
 
     } catch (error: any) {
         setDevLog(filename, level.FATAL, `Error at UserRoutesSetup is: ${error.message}`);

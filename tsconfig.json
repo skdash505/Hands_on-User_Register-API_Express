@@ -103,9 +103,9 @@
       "node_modules_dep",
       "wwwroot"
     ],
-    "include": [
-      "src/**/*.ts"
-    ],
+    // "include": [
+    //   "src/**/*.ts"
+    // ],
     "compileOnSave": true
   }
   

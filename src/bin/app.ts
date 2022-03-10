@@ -12,7 +12,7 @@ import { setDevLog, level } from "../utils/log";
 import config from "config";
 
 // Import Custom MiddleWares
-import { deserializeUser } from "../middleware";
+import { validateUserSession } from "../middleware";
 
 //Import Essential components
 import swaggerDocs from "../utils/swaggerUi";
@@ -20,6 +20,9 @@ import connect from "../utils/db/connect";
 import Routers from "../routes/index.routes";
 import catchError from "./shared/catch.error";
 import temp from "./shared/temp.shared";
+
+//Import Debug components
+import debugerComp from "../temp/debugContents";
 
 class App {
   private Server: any;
@@ -36,15 +39,19 @@ class App {
     this.Server = express()
     this.Router = Router()
 
+    //Debug some content
+    debugerComp(this.Server);
+    
     setDevLog(this.filename, level.INFO, `\n\n\t\t\t\t\t\tExpress App initiated.`);
-
+    
+    // Initiating Middlewares
     this.setupMiddleware();
     // this.setupServer();
   }
 
   public async setupMiddleware() {
     try {
-      setDevLog(this.filename, level.INFO, "Stup MiddleWare Started.");
+      setDevLog(this.filename, level.TRACE, "Stup MiddleWare Started.");
       // Using Express's MiddleWares
       this.Server.use(express.json());
       this.Server.use(express.urlencoded({ extended: false }));
@@ -54,7 +61,7 @@ class App {
       this.Server.use(require('helmet')());
 
       // Using Custom MiddleWares
-      await this.Server.use(deserializeUser);
+      await this.Server.use(validateUserSession);
 
       setDevLog(this.filename, level.INFO, "MiddleWare Setup Done.");
     } catch (error) {
@@ -65,7 +72,7 @@ class App {
 
   public async startServer() {
     try {
-      setDevLog(this.filename, level.INFO, "Starting the Server.");
+      setDevLog(this.filename, level.TRACE, "Starting the Server.");
       return new Promise((resolve, reject) => {
         var server = http.createServer(this.Server);
         // Listen on provided port, on all network interfaces.
@@ -120,7 +127,7 @@ class App {
 
   public async setupServer() {
     try {
-      setDevLog(this.filename, level.INFO, "Server Setup Started.");
+      setDevLog(this.filename, level.TRACE, "Server Setup Started.");
 
       // Initating staticPages
       this.Server.use(express.static(path.join(__dirname, './public')));
@@ -129,17 +136,17 @@ class App {
       this.Server.set('views', path.join(__dirname, './views'));
       this.Server.set('view engine', 'pug');
 
-      //All end points atteched as Router
-      await Routers(this.Server, this.Router);
+      //Some essential middleware used
+      await temp(this.Server);
 
       // Connection to Database established
       await connect();
 
+      //All end points atteched as Router
+      await Routers(this.Server, this.Router);
+
       //SwaggerUi initalized
       await swaggerDocs(this.Server, this.serverUrl);
-
-      //Some essential middleware used
-      await temp(this.Server);
 
       //Handel unavailable End-Points
       await catchError(this.Server);

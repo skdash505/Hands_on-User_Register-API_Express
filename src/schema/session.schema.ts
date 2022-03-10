@@ -1,23 +1,30 @@
-// src/schema/user.schema.ts
+// src/schema/session.schema.ts
 
-import { any, object, string, TypeOf } from "zod";
+import { any, boolean, object, string, TypeOf } from "zod";
 
-export const SessionSchema = object({
+export const CreateSessionSchema = object({
     body: object({
         email: string({
             required_error: "E-mail is required"
         }),
-        // }).email(" Not a valid email"),
         password: string({
             required_error: "Password is required"
         }),
-        // }).min(6, "password Too short - should be 6 chars minimum"),
-    }),
-    query: object({
-        rememberDevice: string({
+        rememberDevice: boolean({
             required_error: "rememberDevice is required"
-        })
+        }),
+        valid: boolean({
+            required_error: `"Valid" attribute is required`
+        }),
     })
 });
-export type SessionInput =  TypeOf<typeof SessionSchema>;
-// export type SessionInput =  Omit<TypeOf<typeof SessionSchema>, "query.rememberDevice">
+export type CreateSessionInput =  Omit<TypeOf<typeof CreateSessionSchema>, "body.email" | "body.password">;
+
+export const SessionIDSchema = object({
+    params: object({
+        _id: string({
+            required_error: "SessionId is required"
+        }),
+    }),
+});
+export type SessionIDInput =  TypeOf<typeof SessionIDSchema>;

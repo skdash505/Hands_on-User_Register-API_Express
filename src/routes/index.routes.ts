@@ -1,7 +1,7 @@
 // src/routes/index.routes.ts
 
 import path from "path";
-import { setDevLog, masterLog, level } from "../utils/log";
+import { setDevLog, level } from "../utils/log";
 const filename = path.basename(__filename);
 
 import { Express, Router, Request, Response, NextFunction } from "express";
@@ -29,7 +29,7 @@ export default async function (app: Express, router: Router) {
 
     setDevLog(filename, level.INFO, `EndPoints as Routrs Setup Successed.`);
   } catch (error: any) {
-    masterLog.fatal(`Error at Index.Routes is: ${error.message}`);
+    setDevLog(filename, level.FATAL, `Error at Index.Routes is: ${error.message}`);
     throw new Error(error);
   }
 }

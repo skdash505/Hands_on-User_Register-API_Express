@@ -5,7 +5,7 @@ import { setDevLog, level } from "../utils/log";
 const filename = path.basename(__filename);
 
 import { omit } from "lodash";
-import { DocumentDefinition} from "mongoose";
+import { DocumentDefinition } from "mongoose";
 import UserModel, { UserDocument, UserInputs } from "../model/user.model";
 
 // Create a User
@@ -16,16 +16,6 @@ export async function createUser(input: DocumentDefinition<UserInputs>) {
     return omit(createdUser.toJSON(), "password")
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at createUser is: ${error.message}`);
-    throw new Error(error);
-  }
-}
-
-//Get All User
-export async function getAllUser() {
-  try {
-    return await UserModel.find().select(["-password", "-__v"]);
-  } catch (error: any) {
-    setDevLog(filename, level.FATAL, `Error at getAllUser is: ${error.message}`);
     throw new Error(error);
   }
 }
@@ -57,6 +47,16 @@ export async function deleteUser(_id: string) {
     return await UserModel.deleteOne({_id:_id});
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at deleteUser is: ${error.message}`);
+    throw new Error(error);
+  }
+}
+
+//Get All User
+export async function getAllUser() {
+  try {
+    return await UserModel.find().select(["-password", "-__v"]);
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at getAllUser is: ${error.message}`);
     throw new Error(error);
   }
 }

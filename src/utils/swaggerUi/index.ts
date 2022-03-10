@@ -39,7 +39,7 @@ function setupSwaggerUi(app: Express, serverUrl: string) {
     //     { explorer: true }
     //   )
     // );
-    // setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths.swaggerUI}/index.html`);
+    // setDevLog(filename, level.TRACE, `Swagger available at ${serverUrl}${apiPaths.swaggerUI}/index.html`);
 
 
     // // swaggerUi Default in JSON format
@@ -65,7 +65,7 @@ function setupSwaggerUi(app: Express, serverUrl: string) {
         { explorer: true }
       )
     );
-    setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths._base + apiPaths.swaggerUI}`);
+    setDevLog(filename, level.TRACE, `Swagger available at ${serverUrl}${apiPaths._base + apiPaths.swaggerUI}`);
 
 
     // swaggerUi App in JSON format
@@ -92,7 +92,7 @@ function setupOpenApi(app: Express, serverUrl: string) {
     //     { explorer: true }
     //   )
     // );
-    // setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths.swaggerUI}/index.html`);
+    // setDevLog(filename, level.TRACE, `Swagger available at ${serverUrl}${apiPaths.swaggerUI}/index.html`);
 
     // // OpenApi Default in JSON format
     // app.get(apiPaths.swaggerUI + ".json", (req: Request, res: Response) => {
@@ -122,7 +122,7 @@ function setupOpenApi(app: Express, serverUrl: string) {
         { explorer: true }
       )
     );
-    setDevLog(filename, level.INFO, `Swagger available at ${serverUrl}${apiPaths._base + apiPaths.swaggerUI}`);
+    // setDevLog(filename, level.TRACE, `Swagger available at ${serverUrl}${apiPaths._base + apiPaths.swaggerUI}`);
 
     // OpenApi App in JSON format
     app.get(apiPaths._base + apiPaths.swaggerUI + ".json", (req: Request, res: Response) => {

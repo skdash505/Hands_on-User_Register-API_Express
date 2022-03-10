@@ -12,14 +12,32 @@ configure({
         ownFile: { type: 'multiFile', base: 'resource/logs/', property: 'categoryName', extension: '.log' }
     },
     categories: {
-        console: { appenders: ['out'], level: 'All' },
+        console: { appenders: ['out'], level: 'ALL' },
         dev: { appenders: ['devFile'], level: 'All' },
-        master: { appenders: ['masterFile'], level: 'debug' },
+        master: { appenders: ['masterFile'], level: 'ALL' },
         default: { appenders: ['ownFile'], level: 'debug' },
     }
 });
 
+// TRACE < DEBUG < INFO < WARN < ERROR < FATAL < MARK
+
 export const level = levels;
+
+// [
+// Level { level: 5e-324, levelStr: 'ALL', colour: 'grey' },
+//   Level { level: 5000, levelStr: 'TRACE', colour: 'blue' },
+//   Level { level: 10000, levelStr: 'DEBUG', colour: 'cyan' },
+//   Level { level: 20000, levelStr: 'INFO', colour: 'green' },
+//   Level { level: 30000, levelStr: 'WARN', colour: 'yellow' },
+//   Level { level: 40000, levelStr: 'ERROR', colour: 'red' },
+//   Level { level: 50000, levelStr: 'FATAL', colour: 'magenta' },
+//   Level { level: 9007199254740992, levelStr: 'MARK', colour: 'grey' },
+//   Level {
+//     level: 1.7976931348623157e+308,
+//     levelStr: 'OFF',
+//     colour: 'grey'
+//   }
+// ]
 
 export const log = getLogger('console');
 export const masterLog = getLogger("master");

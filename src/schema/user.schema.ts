@@ -44,7 +44,8 @@ export const UpdateUserSchema = object({
         message: "Password do not match",
         path: ["passwordConfirmation"]
     }),
-    query: object({
+    params: object({
+    // query: object({
         _id: string({
             required_error: "UserId is required"
         })
@@ -54,8 +55,8 @@ export type UpdateUserInput = Omit<TypeOf<typeof UpdateUserSchema>, "body.passwo
 
 
 export const UserIDSchema = object({
-    // params: object({
-    query: object({
+    params: object({
+    // query: object({
         _id: string({
             required_error: "UserId is required"
         })
