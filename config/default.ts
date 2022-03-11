@@ -1,8 +1,8 @@
 // config/default.ts
 
 import path from "path"
-import apiPaths from "./apiPaths.json"
-// import {apiPaths} from "./apiPaths"
+// import apiPaths from "./apiPath.json"
+import apiPaths from "./apiPaths"
 
 export default {
   // Server Url
@@ -16,7 +16,6 @@ export default {
 
   // Api's subPaths
   apiPaths: apiPaths,
-  // apiPaths: apiPaths(),
 
   // Location to LoggerFile
   loggerPath: path.join(__dirname, '../resource/logs'),
@@ -25,18 +24,30 @@ export default {
   saltWorkFactor: 10,
 
   // Tokens Expairation Time
-  accessTokenExp: "1min", // in minutes
+  accessTokenExp: -1, // in minutes
+  // accessTokenExp: "15min", // in minutes
   refreshTokenExp: "30d", // in Days
 
   // Tokens Session Time
-  accessSessionExp: 17, // in minutes
+  accessSessionExp: 30, // in minutes
   refreshSessionExp: 30, // in Days
 
-  // Path to Private key for Token
-  pubKeyPath: "./resource/key/id_rsa_pub.key",
+  // Access key for Token (Encoded)
+  accessTokenPrivateKey: "ACCESS_TOKEN_PRIVATE_KEY",
+  accessTokenPublicKey: "ACCESS_TOKEN_PUBLIC_KEY",
 
-  // Path to Private key for Token
-  perKeyPath: "./resource/key/id_rsa_per.key",
+  // Refresh key for Token (Encoded)
+  refreshTokenPrivateKey: "REFRESH_TOKEN_PRIVATE_KEY",
+  refreshTokenPublicKey: "REFRESH_TOKEN_PUBLIC_KEY",
+
+
+  // Path to Access key for Token (Plain)
+  accessTokenPrivateKeyPath: path.join(__dirname, '../resource/key/id_rsa_access_per.key'),
+  accessTokenPublicKeyPath: path.join(__dirname, '../resource/key/id_rsa_access_pub.key'),
+
+  // Path to Refresh key for Token (Plain)
+  refreshTokenPrivateKeyPath: path.join(__dirname, '../resource/key/id_rsa_refresh_per.key'),
+  refreshTokenPublicKeyPath: path.join(__dirname, '../resource/key/id_rsa_refresh_pub.key'),
 
   // 
 }

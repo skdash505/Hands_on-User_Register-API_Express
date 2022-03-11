@@ -45,4 +45,44 @@ export default async (app: Express) => {
     //     refreshTtl: config.get("refreshTokenExp"),
     //     refreshTtl_expires: new Date(Date.now() + config.get<number>("accessSessionExp") * (24 * 60 * 60 * 1000)),
     //   })
+
+    // JWT Token_1
+    // console.log("accessTokenPrivateKey_Name:", config.get<string>("accessTokenPrivateKey"),);
+    // console.log("accessTokenPrivateKey:", Buffer.from(config.get<string>("accessTokenPrivateKey"), "base64").toString(
+    //     "ascii"
+    // ));
+    // console.log("accessTokenPublicKey_Name:", config.get<string>("accessTokenPublicKey"),);
+    // console.log("accessTokenPublicKey:", Buffer.from(config.get<string>("accessTokenPublicKey"), "base64").toString(
+    //     "ascii"
+    // ));
+    // console.log("refreshTokenPrivateKey_Name:", config.get<string>("refreshTokenPrivateKey"),);
+    // console.log("refreshTokenPrivateKey:", Buffer.from(config.get<string>("refreshTokenPrivateKey"), "base64").toString(
+    //     "ascii"
+    // ));
+    // console.log("refreshTokenPublicKey_Name:", config.get<string>("refreshTokenPublicKey"),);
+    // console.log("refreshTokenPublicKey:", Buffer.from(config.get<string>("refreshTokenPublicKey"), "base64").toString(
+    //     "ascii"
+    // ));
+
+    // JWT Token_2
+    // const accessTokenPrivateKey = Buffer.from(config.get<string>("accessTokenPrivateKey"), "base64").toString("ascii");
+    // console.log("accessTokenPrivateKey:", accessTokenPrivateKey );
+    // const accessTokenPublicKey = Buffer.from(config.get<string>("accessTokenPublicKey"), "base64").toString("ascii");
+    // console.log("accessTokenPublicKey:", accessTokenPublicKey );
+    // const refreshTokenPrivateKey = Buffer.from(config.get<string>("refreshTokenPrivateKey"), "base64").toString("ascii");
+    // console.log("refreshTokenPrivateKey:", refreshTokenPrivateKey );
+    // const refreshTokenPublicKey = Buffer.from(config.get<string>("refreshTokenPublicKey"), "base64").toString("ascii");
+    // console.log("refreshTokenPublicKey:", refreshTokenPublicKey );
+
+
+    // // For Provess Env and Config
+    // console.log(require('config'));
+    // console.log({
+    //     "ACCESS_TOKEN_PRIVATE_KEY": process.env.ACCESS_TOKEN_PRIVATE_KEY,
+    //     "ACCESS_TOKEN_PUBLIC_KEY": process.env.ACCESS_TOKEN_PUBLIC_KEY,
+    //     "REFRESH_TOKEN_PRIVATE_KEY": process.env.REFRESH_TOKEN_PRIVATE_KEY,
+    //     "REFRESH_TOKEN_PUBLIC_KEY": process.env.REFRESH_TOKEN_PUBLIC_KEY,
+    // });
+
+
 }

@@ -30,13 +30,11 @@ import { findUser } from "./user.service";
 
 // Create a UserSession
 export async function createSession(userId: string, req: Request) {
-  // export async function createSession(userId: string, req: CreateSessionInput, userAgent: string) {
   try {
     const session = await SessionModel.create(
       {
         user: userId,
         userAgent: req.get("user-agent") || "",
-        // userAgent,
         rememberDevice: req.body.rememberDevice
       });
     return session.toJSON();
@@ -104,21 +102,16 @@ export async function getSessions(query: FilterQuery<SessionDocument>) {
 export async function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   try {
     // Get decoded Dta from Token and check for valid "ID"
-    const { decoded } = await verifyJwt(refreshToken);
+    const { decoded } = await verifyJwt(refreshToken as string, "refreshTokenPublicKey");
     if (!decoded || !get(decoded, 'session')) {
-    // if (!decoded || !get(decoded, '_id')) {
       setDevLog(filename, level.WARN, `Token Doesn't Contains Valid Data and Id`);
       return false;
     }
-    console.log(get(decoded, 'session'));
-    // console.log(get(decoded, '_id'));
 
     // find session with decoded "ID" and check for valid as "true"
-    const query: FilterQuery<SessionDocument> = { _id: get(decoded, 'session')};
-    // const query: FilterQuery<SessionDocument> = { _id: get(decoded, '_id')};
-    const session = await SessionModel.findOne(query);
-    // const session = await SessionModel.findById(get(decoded, 'session'));
-    // const session = await SessionModel.findById(get(decoded, '_id'));
+    const session = await SessionModel.findById(get(decoded, 'session'));
+    // const query: FilterQuery<SessionDocument> = { _id: get(decoded, 'session')};
+    // const session = await SessionModel.findOne(query);
     if (!session || !session.valid) {
       setDevLog(filename, level.WARN, `Token Doesn't Contains Valid Session.`);
       return false;
@@ -133,7 +126,7 @@ export async function reIssueAccessToken({ refreshToken }: { refreshToken: strin
 
     // Create A new AccessToken
     const accessToken = await signJwt(
-      { ...user, session: session._id },
+      { ...user, session: session._id }, "accessTokenPrivateKey",
       { expiresIn: config.get("accessTokenExp") } // in minutes
     );
     return accessToken;

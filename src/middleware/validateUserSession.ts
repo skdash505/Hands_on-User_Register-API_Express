@@ -9,7 +9,7 @@ const filename = path.basename(__filename);
 import config from "config";
 
 // Custom Functions from Lib
-import setAccessToken from "../libs/functions/setAccessToken";
+import setCookies from "../libs/functions/setCookies";
 
 // Import Essential Librarys
 import { Request, Response, NextFunction } from "express";
@@ -42,7 +42,7 @@ const validateUserSession = async (
 
     // Check availability of tokens
     if (!accessToken) {
-      setDevLog(filename, level.WARN, `AccessToken was Expaired.`);
+      setDevLog(filename, level.WARN, `No AccessToken available.`);
       return next();
     }
     // if (!refreshToken) {
@@ -52,7 +52,7 @@ const validateUserSession = async (
 
 
     // Verify AccessToken
-    const { decoded, expired } = await verifyJwt(accessToken);
+    const { decoded, expired } = await verifyJwt(accessToken as string, "accessTokenPublicKey");
     if (decoded) {
       // Set decoded User data in Local Response;
       res.locals.user = decoded;
@@ -70,15 +70,16 @@ const validateUserSession = async (
         // res.setHeader("x-access-token", newAccessToken);
 
         // Add the new accessToken to the response Cookies
-        setAccessToken(
-          accessToken,
-          config.get<number>("accessSessionExp"),
-          res,
-          filename, setDevLog, level
-        );
+        setCookies(filename, "accessToken", accessToken, res, next, {
+          age: config.get<number>("accessSessionExp"),
+          expaire: undefined,
+          http: true,
+          sescure: false,
+          path: undefined,
+        });
 
         // Get Decoded Data from new accessToken
-        const { decoded } = await verifyJwt(newAccessToken);
+        const { decoded } = await verifyJwt(newAccessToken as string, "accessTokenPublicKey");
         // Set decoded User data in Local Response;
         res.locals.user = decoded;
 

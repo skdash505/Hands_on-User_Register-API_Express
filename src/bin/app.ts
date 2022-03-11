@@ -4,12 +4,17 @@
 import express, { Express, Router } from "express";
 import http from "http";
 
+//Import Debug components
+import debugerComp from "../temp/debugContents";
+
 // Import Essential Package
 import path from "path";
 // Import and use Logger Scripts
 import { setDevLog, level } from "../utils/log";
 //Import Process Configuration
 import config from "config";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Import Custom MiddleWares
 import { validateUserSession } from "../middleware";
@@ -21,8 +26,6 @@ import Routers from "../routes/index.routes";
 import catchError from "./shared/catch.error";
 import temp from "./shared/temp.shared";
 
-//Import Debug components
-import debugerComp from "../temp/debugContents";
 // Import Other ??
 
 class App {

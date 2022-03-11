@@ -9,11 +9,10 @@ const filename = path.basename(__filename);
 import config from "config";
 
 // Custom Functions from Lib
-import setAccessToken from "../libs/functions/setAccessToken";
-import setRefreshToken from "../libs/functions/setRefreshToken";
+import setCookies from "../libs/functions/setCookies";
 
 // Import Essential Librarys
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { isEmpty, omit } from "lodash";
 
 // Import Essential Services
@@ -25,16 +24,16 @@ import { createSession, getSessions, patchSession, updateSession } from "../serv
 
 // Import Required Schemas
 import { CreateSessionInput, SessionIDInput, SessionValidInput } from "../schema/session.schema";
-import { CookiesnInput } from "../schema/cookies.schema";
+import { CookiesnInput, CookiesSchema } from "../schema/cookies.schema";
 
 // Import Other ??
 
 
 // Create a UserSession
 export async function createUserSessionHandler(
-  req: Request<any, any, CreateSessionInput["body"]>, 
+  req: Request<any, any, CreateSessionInput["body"]>,
   // req: Request<any, any, CreateSessionInput["body"], CreateSessionInput["params"]>, 
-  res: Response<any, CookiesnInput["cookies"]>) {
+  res: Response<any, CookiesnInput["cookies"]>, next: NextFunction) {
   try {
     // validate the email and password
     const user = await validateUser(req.body);
@@ -45,52 +44,35 @@ export async function createUserSessionHandler(
 
     // Create a session
     const session = await createSession(user._id, req);
-    // const session = await createSession(user._id, req, req.get("user-agent") || "");
 
     // create access token
     const accessToken = await signJwt(
-      { ...user, session: session._id },
+      { ...user, session: session._id }, "accessTokenPrivateKey",
       { expiresIn: config.get("accessTokenExp") } // in minutes
     );
-    setAccessToken(
-      accessToken,
-      config.get<number>("accessSessionExp"),
-      res,
-      filename, setDevLog, level
-    );
-    // if (accessToken) {
-    //   setDevLog(filename, level.MARK, `Sending accessToken in Cookies.`);
-    //   res.cookie(
-    //     "accessToken", accessToken,
-    //     {
-    //       maxAge: config.get<number>("accessSessionExp") * (60 * 1000),
-    //       httpOnly: true
-    //     });
-    // }
+    setCookies(filename, "accessToken", accessToken, res, next, {
+      age: config.get<number>("accessSessionExp"),
+      expaire: undefined,
+      http: true,
+      sescure: false,
+      path: undefined,
+    });
 
     // create refresh token
     var refreshToken: any
     if (req.body.rememberDevice) {
-    // if (Boolean(Number(req.params.rememberDevice))) {
+      // if (Boolean(Number(req.params.rememberDevice))) {
       refreshToken = await signJwt(
-        { ...user, session: session._id },
+        { ...user, session: session._id }, "refreshTokenPrivateKey",
         { expiresIn: config.get("refreshTokenExp") } // 1 year
       );
-      setRefreshToken(
-        refreshToken,
-        config.get<number>("refreshSessionExp"),
-        res,
-        filename, setDevLog, level
-      );
-      // if (refreshToken) {
-      //   setDevLog(filename, level.MARK, `Sending refreshToken in Cookies.`);
-      //   res.cookie(
-      //     "refreshToken", refreshToken,
-      //     {
-      //       expires: new Date(Date.now() + config.get<number>("refreshSessionExp") * (24 * 60 * 60 * 1000)),
-      //       httpOnly: true
-      //     });
-      // }
+      setCookies(filename, "refreshToken", accessToken, res, next, {
+        age: undefined,
+        expaire: config.get<number>("refreshSessionExp"),
+        http: true,
+        sescure: false,
+        path: undefined,
+      });
     }
 
     // send refresh & access token back
@@ -148,37 +130,37 @@ export async function patchUserSessionHandler(req: Request, res: Response) {
 export async function deleteUserSessionHandler(req: Request, res: Response) {
   try {
     const sessionId = await res.locals.user.session;
-    const updatedSessions = await updateSession({ _id: sessionId},{ valid: false });
-    
+    const updatedSessions = await updateSession({ _id: sessionId }, { valid: false });
+
     if (updatedSessions.modifiedCount === 1 && updatedSessions.matchedCount === 1) {
       setDevLog(filename, level.MARK, `Sessions Deleted Successfully`);
-        return res.status(200)
+      return res.status(200)
         .clearCookie("accessToken")
         .clearCookie("refreshToken")
         .send({
           message: `Sessions Deleted Successfully`,
           data: updatedSessions
         });
-      } else if (updatedSessions.matchedCount === 1 && updatedSessions.modifiedCount === 0) {
+    } else if (updatedSessions.matchedCount === 1 && updatedSessions.modifiedCount === 0) {
       setDevLog(filename, level.ERROR, `Unable to Deleted the Sessions`);
-        return res.status(409).send({
-          message: `Unable to Deleted the Sessions`,
-          data: updatedSessions
-        });
-      } else if (updatedSessions.matchedCount === 0) {
+      return res.status(409).send({
+        message: `Unable to Deleted the Sessions`,
+        data: updatedSessions
+      });
+    } else if (updatedSessions.matchedCount === 0) {
       setDevLog(filename, level.ERROR, `No Session found`);
-        return res.status(404).send({
-          message: `No Session found`,
-          data: updatedSessions
-        });
-      } else {
+      return res.status(404).send({
+        message: `No Session found`,
+        data: updatedSessions
+      });
+    } else {
       setDevLog(filename, level.WARN, `Error occured when deleting the current Session`);
-        return res.status(404).send({
-          message: `Error occured when deleting the current Session`,
-          data: updatedSessions
-        });
-      }
-        
+      return res.status(404).send({
+        message: `Error occured when deleting the current Session`,
+        data: updatedSessions
+      });
+    }
+
     // setDevLog(filename, level.INFO, `Sessions Deleted Successfully.`);
     // return res.status(200).send(updatedSessions);
   } catch (error: any) {

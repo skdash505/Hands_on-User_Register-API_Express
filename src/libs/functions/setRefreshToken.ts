@@ -1,21 +1,12 @@
 // src/libs/function/setRefreshToken
 
 export default async (
-  //     {
-  //     token,
-  //     expaire,
-  //     res,
-  //     filename,
-  //     setDevLog,
-  //     level
-  // }:{
   token: any,
   expaire: number,
   res: any,
   filename: string,
   setDevLog: any,
   level: any
-  // }
 ) => {
 
   if (token) {

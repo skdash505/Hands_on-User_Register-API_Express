@@ -9,8 +9,7 @@ const filename = path.basename(__filename);
 import config from "config";
 
 // Custom Functions from Lib
-import setAccessToken from "../libs/functions/setAccessToken";
-import setRefreshToken from "../libs/functions/setRefreshToken";
+import setCookies from "../libs/functions/setCookies";
 
 // Import Essential Librarys
 import { Request, Response } from "express";

@@ -12,7 +12,7 @@ import config from "config";
 
 // Import Essential Librarys
 import jwt from "jsonwebtoken";
-import { readFile } from 'fs';
+import { readFile, readFileSync } from 'fs';
 
 // Import Essential Services ??
 
@@ -22,37 +22,16 @@ import { validatedToken } from "../../libs/classes/validatedToken";
 // Import Other ??
 
 
-// const pubKey = config.get<string>("pubKey");
-
-// Read the perKey
-var perKey: string;
-var perKeyFile = path.join(__dirname.split("src")[0], config.get<string>("perKeyPath"));
-
-readFile(perKeyFile, (err, data) => {
-  if (err) {
-    setDevLog(filename, level.FATAL, `Error at Reading Private Key is: ${err}`);
-    // throw err;
-  } else {
-    perKey = data.toString();
-    // console.log(`perKey: ${perKey}`);
-  }
-})
-// Read the pubKey
-var pubKey: string;
-var pubKeyFile = path.join(__dirname.split("src")[0], config.get<string>("pubKeyPath"));
-
-readFile(pubKeyFile, (err, data) => {
-  if (err) {
-    setDevLog(filename, level.FATAL, `Error at Reading Public Key is: ${err}`);
-    // throw err;
-  } else {
-    pubKey = data.toString();
-    // console.log(`perKey: ${perKey}`);
-  }
-})
-
 //Create JWT Token
-export async function signJwt(object: Object, options?: jwt.SignOptions | undefined): Promise<string | undefined> {
+export async function signJwt(
+  object: Object,
+  keyName: "accessTokenPrivateKey" | "refreshTokenPrivateKey",
+  options?: jwt.SignOptions | undefined
+): Promise<string | undefined> {
+
+  const perKey = await readKey(keyName);
+
+  // Cerate Token with Private key
   try {
     const signToken = jwt.sign(object, perKey, {
       ...(options && options),
@@ -67,12 +46,16 @@ export async function signJwt(object: Object, options?: jwt.SignOptions | undefi
 }
 
 //Validate JWT Token
-export async function verifyJwt(token: string, options?: jwt.VerifyOptions): Promise<validatedToken> {
+export async function verifyJwt(
+  token: string,
+  keyName: "accessTokenPublicKey" | "refreshTokenPublicKey",
+  options?: jwt.VerifyOptions): Promise<validatedToken> {
+
+  const pubKey = await readKey(keyName);
+
+  // Verify Token with Public key
   try {
-    const decoded = jwt.verify(token, perKey, {
-      ...(options && options),
-      algorithms:['RS256']
-    });
+    const decoded = jwt.verify(token, pubKey, { algorithms: ['RS256'] });
     setDevLog(filename, level.MARK, `jwt Token Verified successfully`);
     return { valid: true, expired: false, decoded };
   } catch (error: any) {
@@ -84,4 +67,27 @@ export async function verifyJwt(token: string, options?: jwt.VerifyOptions): Pro
       decoded: null,
     };
   }
+}
+
+// Read the Key
+async function readKey(keyName: string): Promise<string> {
+  // // Read the Key from Plain Key File
+  // var key = "" as string;
+  // const keyFile = config.get<string>(keyName + "Path");
+  // await readFile(keyFile, (err, data) => {
+  //   if (err) {
+  //     setDevLog(filename, level.FATAL, `Error at Reading ${keyName} is: ${err}`);
+  //   }
+  //   key = data.toString();
+  // });
+  // return key;
+
+  // Read the Key from Plain Key File
+  const keyFile = config.get<string>(keyName + "Path");
+  return  readFileSync(keyFile).toString();
+
+  // Read the pubKey from sourse Encoded
+  // return Buffer.from(config.get<string>(keyName), "base64").toString(
+  //   "ascii"
+  // );
 }

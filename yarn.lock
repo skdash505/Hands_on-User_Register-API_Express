@@ -1293,6 +1293,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "dotenv@npm:16.0.0"
+  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
+  languageName: node
+  linkType: hard
+
 "duplexer3@npm:^0.1.4":
   version: 0.1.4
   resolution: "duplexer3@npm:0.1.4"
@@ -3927,6 +3934,7 @@ __metadata:
     cors: ^2.8.5
     dayjs: ^1.10.7
     debug: ~2.6.9
+    dotenv: ^16.0.0
     express: ^4.17.3
     express-session: ^1.17.2
     helmet: ^5.0.2
