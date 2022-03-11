@@ -1,11 +1,23 @@
 // src/middleware/validateResourses.ts
 
+// Import Logging Essentials
 import path from "path";
-import { setDevLog, level } from "../utils/log";
+import { setDevLog, level, masterLog } from "../utils/log";
 const filename = path.basename(__filename);
 
-import { Request, Response, NextFunction} from "express";
+// Import Process Configuration
+import config from "config";
+
+// Custom Functions from Lib ??
+
+// Import Essential Librarys
+import { Request, Response, NextFunction } from "express";
 import { AnyZodObject } from "zod";
+
+// Import Essential Services ??
+
+// Import Other ??
+
 
 const validateResourses = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -20,10 +32,10 @@ const validateResourses = (schema: AnyZodObject) => (req: Request, res: Response
             socket: req.socket,
             subDomines: req.subdomains
         });
-        setDevLog(filename, level.INFO," Validate Resourses Sucessfully.");
-        next();
+        setDevLog(filename, level.MARK, `Validate Resourses Sucessfully.`);
+        return next();
     } catch (error: any) {
-        setDevLog(filename, level.ERROR,`Error at Validate Resourses is: ${error.name} \n details as: ${JSON.stringify(error.issues)}\n ${error.stack}`);
+        setDevLog(filename, level.ERROR, `Error at Validate Resourses is: ${error.name} \n details as: ${JSON.stringify(error.issues)}\n ${error.stack}`);
         return res.status(404).send(error);
     }
 }

@@ -1,5 +1,16 @@
 // src/schema/user.schema.ts
 
+// Import Essential Librarys ??
+
+// Import Essential Dto Classes ??
+
+// Import Required Schemas ??
+
+// Import Required Model ??
+
+// Import Other ??
+
+
 import { Omit } from "lodash";
 import { any, object, string, TypeOf } from "zod";
 
@@ -44,7 +55,8 @@ export const UpdateUserSchema = object({
         message: "Password do not match",
         path: ["passwordConfirmation"]
     }),
-    query: object({
+    params: object({
+    // query: object({
         _id: string({
             required_error: "UserId is required"
         })
@@ -54,8 +66,8 @@ export type UpdateUserInput = Omit<TypeOf<typeof UpdateUserSchema>, "body.passwo
 
 
 export const UserIDSchema = object({
-    // params: object({
-    query: object({
+    params: object({
+    // query: object({
         _id: string({
             required_error: "UserId is required"
         })

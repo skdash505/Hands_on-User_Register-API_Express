@@ -1,7 +1,13 @@
 // src/bin/shared/catch.error.ts
 
+// Import Logging Essentials
 import { masterLog } from "../../utils/log";
+
+// Import Essential Librarys
 import { Express, Router, Request, Response, NextFunction } from "express";
+
+// Import Other ??
+
 
 export default function (app: Express) {
   try {
