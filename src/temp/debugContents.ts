@@ -1,13 +1,27 @@
 // src/temo/debugContent.ts
 
-// Import Essential Package
+// Import Logging Essentials
 import path from "path";
-// Import and use Logger Scripts
-import { setDevLog, log, masterLog, level } from "../utils/log";
-// Import Config
+import { setDevLog, level, masterLog, log } from "../utils/log";
+const filename = path.basename(__filename);
+
+// Import Process Configuration
 import config from "config";
 
+// Custom Functions from Lib ??
+
+// Import Essential Librarys
 import { Express } from "express";
+
+// Import Essential Services ??
+
+// Import Essential Dto Classes ??
+
+// Import Required Schemas ??
+// import { CreateUserInput } from "../schema/user.schema";
+
+// Import Other ??
+
 
 export default async (app: Express) => {
     masterLog.debug("🤞🎉👨‍🦰 Hi Debugger Here ✌🤷‍♂️");

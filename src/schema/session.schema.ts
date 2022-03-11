@@ -1,5 +1,16 @@
 // src/schema/session.schema.ts
 
+// Import Essential Librarys ??
+
+// Import Essential Dto Classes ??
+
+// Import Required Schemas ??
+
+// Import Required Model ??
+
+// Import Other ??
+
+
 import { any, boolean, object, string, TypeOf } from "zod";
 
 export const CreateSessionSchema = object({
@@ -13,9 +24,9 @@ export const CreateSessionSchema = object({
         rememberDevice: boolean({
             required_error: "rememberDevice is required"
         }),
-        valid: boolean({
-            required_error: `"Valid" attribute is required`
-        }),
+        // valid: boolean({
+        //     required_error: `"Valid" attribute is required`
+        // }),
     })
 });
 export type CreateSessionInput =  Omit<TypeOf<typeof CreateSessionSchema>, "body.email" | "body.password">;
@@ -28,3 +39,12 @@ export const SessionIDSchema = object({
     }),
 });
 export type SessionIDInput =  TypeOf<typeof SessionIDSchema>;
+
+export const SessionValidSchema = object({
+    body: object({
+        valid: boolean({
+            required_error: "Valid is required"
+        }),
+    }),
+});
+export type SessionValidInput =  TypeOf<typeof SessionValidSchema>;

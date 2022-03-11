@@ -1,9 +1,26 @@
 // src/utils/log/index.ts
-var loggerPath = require('config').loggerPath;
+
+// Import Logging Essentials
 import path from "path";
 
+// Import Process Configuration
+var loggerPath = require('config').loggerPath;
+// import config from "config";
+// var loggerPath = config.get<"">("loggerPath");
+
+// Custom Functions from Lib ??
+
+// Import Essential Librarys
 import { configure, getLogger, Level, levels } from "log4js";
 
+// Import Essential Services ??
+
+// Import Essential Dto Classes ??
+
+// Import Other ??
+
+
+// Custom Configuration of Logging Path and Categories
 configure({
     appenders: {
         out: { type: 'stdout' },
@@ -18,10 +35,8 @@ configure({
         default: { appenders: ['ownFile'], level: 'debug' },
     }
 });
-
 // TRACE < DEBUG < INFO < WARN < ERROR < FATAL < MARK
 
-export const level = levels;
 
 // [
 // Level { level: 5e-324, levelStr: 'ALL', colour: 'grey' },
@@ -39,6 +54,7 @@ export const level = levels;
 //   }
 // ]
 
+export const level = levels;
 export const log = getLogger('console');
 export const masterLog = getLogger("master");
 

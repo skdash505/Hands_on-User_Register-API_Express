@@ -17,13 +17,18 @@ import { Request, Response } from "express";
 import { isEmpty, omit } from "lodash";
 
 // Import Essential Services
-import { validatePassword } from "../service/user.service";
-import { signJwt } from "../utils/auth/jwt.utils";
-import { createSession, deleteSession, getAllSessions, getSessionsbyId, patchSession } from "../service/session.service";
+import { validateUser } from "../service/user.service";
+import { signJwt, verifyJwt } from "../utils/auth/jwt.utils";
+import { createSession, getSessions, patchSession, updateSession } from "../service/session.service";
+
+// Import Essential Dto Classes ??
 
 // Import Required Schemas
-import { CreateSessionInput, SessionIDInput } from "../schema/session.schema";
+import { CreateSessionInput, SessionIDInput, SessionValidInput } from "../schema/session.schema";
 import { CookiesnInput } from "../schema/cookies.schema";
+
+// Import Other ??
+
 
 // Create a UserSession
 export async function createUserSessionHandler(
@@ -32,7 +37,7 @@ export async function createUserSessionHandler(
   res: Response<any, CookiesnInput["cookies"]>) {
   try {
     // validate the email and password
-    const user = await validatePassword(req.body);
+    const user = await validateUser(req.body);
     if (!user) {
       setDevLog(filename, level.WARN, `Invalid username or password.`);
       return res.status(401).send(`Invalid username or password`);
@@ -43,9 +48,9 @@ export async function createUserSessionHandler(
     // const session = await createSession(user._id, req, req.get("user-agent") || "");
 
     // create access token
-    const accessToken = signJwt(
+    const accessToken = await signJwt(
       { ...user, session: session._id },
-      { expiresIn: config.get("accessTokenExp") } // 15 minutes
+      { expiresIn: config.get("accessTokenExp") } // in minutes
     );
     setAccessToken(
       accessToken,
@@ -67,7 +72,7 @@ export async function createUserSessionHandler(
     var refreshToken: any
     if (req.body.rememberDevice) {
     // if (Boolean(Number(req.params.rememberDevice))) {
-      refreshToken = signJwt(
+      refreshToken = await signJwt(
         { ...user, session: session._id },
         { expiresIn: config.get("refreshTokenExp") } // 1 year
       );
@@ -123,17 +128,18 @@ export async function createUserSessionHandler(
   }
 }
 
-  // Validate a UserSession
+// Validate a UserSession
 export async function patchUserSessionHandler(req: Request, res: Response) {
   try {
-    // validate the email and password
     const userId = await res.locals.user._id;
     const sessions = await patchSession({ user: userId, valid: true });
-    setDevLog(filename, level.INFO, `All Sessions Found Successfully.`);
-    return res.status(200).send(sessions);
-
+    setDevLog(filename, level.INFO, `Sessions Validated Successfully.`);
+    return res.status(200).send({
+      message: `Sessions Validated Successfully.`,
+      data: sessions
+    });
   } catch (error: any) {
-    setDevLog(filename, level.FATAL, `Error at getUserSessionHandler is: ${error.message}`);
+    setDevLog(filename, level.FATAL, `Error at patchUserSessionHandler is: ${error.message}`);
     return res.status(409).send(error.message);
   }
 }
@@ -141,12 +147,56 @@ export async function patchUserSessionHandler(req: Request, res: Response) {
 // Delete a UserSession
 export async function deleteUserSessionHandler(req: Request, res: Response) {
   try {
-    // validate the email and password
-    const userId = await res.locals.user._id;
-    const sessions = await deleteSession({ user: userId, valid: true });
-    setDevLog(filename, level.INFO, `All Sessions Found Successfully.`);
-    return res.status(200).send(sessions);
+    const sessionId = await res.locals.user.session;
+    const updatedSessions = await updateSession({ _id: sessionId},{ valid: false });
+    
+    if (updatedSessions.modifiedCount === 1 && updatedSessions.matchedCount === 1) {
+      setDevLog(filename, level.MARK, `Sessions Deleted Successfully`);
+        return res.status(200)
+        .clearCookie("accessToken")
+        .clearCookie("refreshToken")
+        .send({
+          message: `Sessions Deleted Successfully`,
+          data: updatedSessions
+        });
+      } else if (updatedSessions.matchedCount === 1 && updatedSessions.modifiedCount === 0) {
+      setDevLog(filename, level.ERROR, `Unable to Deleted the Sessions`);
+        return res.status(409).send({
+          message: `Unable to Deleted the Sessions`,
+          data: updatedSessions
+        });
+      } else if (updatedSessions.matchedCount === 0) {
+      setDevLog(filename, level.ERROR, `No Session found`);
+        return res.status(404).send({
+          message: `No Session found`,
+          data: updatedSessions
+        });
+      } else {
+      setDevLog(filename, level.WARN, `Error occured when deleting the current Session`);
+        return res.status(404).send({
+          message: `Error occured when deleting the current Session`,
+          data: updatedSessions
+        });
+      }
+        
+    // setDevLog(filename, level.INFO, `Sessions Deleted Successfully.`);
+    // return res.status(200).send(updatedSessions);
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at deleteUserSessionHandler is: ${error.message}`);
+    return res.status(409).send(error.message);
+  }
+}
 
+// find all UserSessions
+export async function getUserSessionHandler(req: Request<any, any, SessionValidInput["body"]>, res: Response) {
+  try {
+    const userId = await res.locals.user._id;
+    const sessions = await getSessions({ user: userId, valid: req.body.valid });
+    setDevLog(filename, level.INFO, `All Sessions Found Successfully with Valid type: ${req.body.valid}`);
+    return res.status(200).send({
+      message: `All Sessions Found Successfully with Valid type: ${req.body.valid}`,
+      data: sessions
+    });
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at getUserSessionHandler is: ${error.message}`);
     return res.status(409).send(error.message);
@@ -154,28 +204,14 @@ export async function deleteUserSessionHandler(req: Request, res: Response) {
 }
 
 // find a UserSession detail by ID
-export async function getUserSessionbyIdHandler(req: Request, res: Response) {
+export async function getUserSessionbyIdHandler(req: Request<any, any, any, SessionIDInput["params"]>, res: Response) {
   try {
-    // validate the email and password
-    const userId = await res.locals.user._id;
-    const sessions = await getSessionsbyId({ user: userId, valid: true });
-    setDevLog(filename, level.INFO, `All Sessions Found Successfully.`);
-    return res.status(200).send(sessions);
-
-  } catch (error: any) {
-    setDevLog(filename, level.FATAL, `Error at getUserSessionHandler is: ${error.message}`);
-    return res.status(409).send(error.message);
-  }
-}
-
-// find all UserSessions
-export async function getUserSessionHandler(req: Request, res: Response) {
-  try {
-    // validate the email and password
-    const userId = await res.locals.user._id;
-    const sessions = await getAllSessions({ user: userId, valid: true });
-    setDevLog(filename, level.INFO, `All Sessions Found Successfully.`);
-    return res.status(200).send(sessions);
+    const sessions = await getSessions({ _id: req.params._id });
+    setDevLog(filename, level.INFO, `Session with id: ${req.params._id} Found.`);
+    return res.status(200).send({
+      message: `Session with id: ${req.params._id} Found.`,
+      data: sessions
+    });
 
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at getUserSessionHandler is: ${error.message}`);

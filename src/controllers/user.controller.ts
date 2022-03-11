@@ -9,6 +9,7 @@ const filename = path.basename(__filename);
 import config from "config";
 
 // Custom Functions from Lib
+import setAccessToken from "../libs/functions/setAccessToken";
 import setRefreshToken from "../libs/functions/setRefreshToken";
 
 // Import Essential Librarys
@@ -18,8 +19,13 @@ import { isEmpty, omit } from "lodash";
 // Import Essential Services
 import { createUser, deleteUser, getAllUser, getUserbyId, updateUser } from "../service/user.service";
 
+// Import Essential Dto Classes ??
+
 // Import Required Schemas
 import { CreateUserInput, UpdateUserInput, UserIDInput } from "../schema/user.schema";
+
+// Import Other ??
+
 
 // Create a User
 export async function createUserHandler(req: Request<any, any, CreateUserInput["body"]>, res: Response) {
@@ -83,13 +89,13 @@ export async function updateUserHandler(req: Request<any, any, UpdateUserInput["
   try {
     const user = await updateUser(req.params._id, req.body);
 
-    if (user.modifiedCount !== 0 && user.matchedCount !== 0) {
+    if (user.modifiedCount === 1 && user.matchedCount === 1) {
     setDevLog(filename, level.MARK, `User Updated Successfully with id: ${req.params._id}`);
       return res.status(200).send({
         message: `User Updated Successfully with id: ${req.params._id}`,
         data: user
       });
-    } else if (user.matchedCount !== 0 && user.modifiedCount === 0) {
+    } else if (user.matchedCount === 1 && user.modifiedCount === 0) {
     setDevLog(filename, level.ERROR, `Unable to update User with id: ${req.params._id} `);
       return res.status(409).send({
         message: `Unable to update User with id: ${req.params._id}`,
@@ -121,7 +127,7 @@ export async function updateUserHandler(req: Request<any, any, UpdateUserInput["
 export async function deleteUserHandler(req: Request<any, any, any, UserIDInput["params"]>, res: Response) {
   try {
     const user = await deleteUser(req.params._id);
-    if (user.deletedCount !== 0) {
+    if (user.deletedCount === 1) {
     setDevLog(filename, level.MARK, `User with id: ${req.params._id} has deleted Successfully.`);
     return res.status(200).send({
         message: `User with id: ${req.params._id} has deleted Successfully.`,

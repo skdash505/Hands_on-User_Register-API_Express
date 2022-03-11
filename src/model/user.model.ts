@@ -1,12 +1,30 @@
 // src/model/user.model.ts
 
+// Import Logging Essentials
 import path from "path";
-import { setDevLog, level } from "../utils/log";
+import { setDevLog, level, masterLog } from "../utils/log";
 const filename = path.basename(__filename);
 
+// Import Process Configuration
+import config from "config";
+
+// Custom Functions from Lib ??
+
+// Import Essential Librarys
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import config from "config";
+import { string } from "zod";
+
+// Import Essential Services ??
+
+// Import Essential Dto Classes ??
+
+// Import Required Schemas ??
+
+// Import Required Model ??
+
+// Import Other ??
+
 
 export interface UserInputs {
   email: string;

@@ -1,12 +1,30 @@
 // src/service/user.service.ts
 
+// Import Logging Essentials
 import path from "path";
-import { setDevLog, level } from "../utils/log";
+import { setDevLog, level, masterLog } from "../utils/log";
 const filename = path.basename(__filename);
 
-import { omit } from "lodash";
-import { DocumentDefinition } from "mongoose";
+// Import Process Configuration
+import config from "config";
+
+// Custom Functions from Lib ??
+
+// Import Essential Librarys
+import { Request, Response } from "express";
+import { isEmpty, get, omit } from "lodash";
+import { DocumentDefinition, FilterQuery, UpdateQuery } from "mongoose";
+
+// Import Essential Services
 import UserModel, { UserDocument, UserInputs } from "../model/user.model";
+
+// Import Essential Dto Classes ??
+
+// Import Required Schemas ??
+// import { CreateUserInput } from "../schema/user.schema";
+
+// Import Other ??
+
 
 // Create a User
 export async function createUser(input: DocumentDefinition<UserInputs>) {
@@ -62,8 +80,8 @@ export async function getAllUser() {
 }
 
 
-// Validate Password for a User to Creat a login Session
-export async function validatePassword({email, password}:{email:string, password: string}) {
+// Validate a User with given mail and pasword
+export async function validateUser({email, password}:{email:string, password: string}) {
   try {
     const userDetails = await UserModel.findOne({email});
     if(!userDetails) return false;
@@ -71,7 +89,17 @@ export async function validatePassword({email, password}:{email:string, password
     if(!isvalid) return false;
     return omit(userDetails.toJSON(), "password");
   } catch (error: any) {
-    setDevLog(filename, level.FATAL, `Error at validatePassword is: ${error.message}`);
+    setDevLog(filename, level.FATAL, `Error at validateUser is: ${error.message}`);
+    throw new Error(error);
+  }
+}
+
+// find User with given Query
+export async function findUser(query: FilterQuery<UserDocument>) {
+  try {
+    return UserModel.findOne(query).lean().select(["-password", "-__v"]);
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at findUser is: ${error.message}`);
     throw new Error(error);
   }
 }
