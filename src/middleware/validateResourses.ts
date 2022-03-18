@@ -36,7 +36,10 @@ const validateResourses = (schema: AnyZodObject) => (req: Request, res: Response
         return next();
     } catch (error: any) {
         setDevLog(filename, level.ERROR, `Error at Validate Resourses is: ${error.name} \n details as: ${JSON.stringify(error.issues)}\n ${error.stack}`);
-        return res.status(404).send(error);
+        return res.status(404).send({
+            message: `Error at Validate Resourses is: ${error.name}`,
+            data: error.issues
+        });
     }
 }
 

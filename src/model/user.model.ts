@@ -28,6 +28,7 @@ import { string } from "zod";
 
 export interface UserInputs {
   email: string;
+  userName: string;
   name: string;
   password: string;
 }
@@ -40,6 +41,7 @@ export interface UserDocument extends UserInputs, mongoose.Document {
 const UserSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },
+    userName: { type: String, required: true, unique: true, },
     name: { type: String, required: true },
     password: { type: String, required: true },
   },

@@ -17,6 +17,7 @@ import { isEmpty, omit } from "lodash";
 
 // Import Essential Services
 import { createUser, deleteUser, getAllUser, getUserbyId, updateUser } from "../service/user.service";
+import { deleteUserSessionHandler } from "./session.controller";
 
 // Import Essential Dto Classes ??
 
@@ -40,22 +41,117 @@ export async function createUserHandler(req: Request<any, any, CreateUserInput["
     setDevLog(filename, level.FATAL, `Error at createUserHandler is: ${error.message}`);
 
     if (error.message.includes("duplicate key")) {
-      let duplicateMail = error.message.split("email: \"")[1].split("\" }")[0];
+      let duplicatAttribute: string = "";
+      let duplicatkey: string = "";
+
+      if (error.message.includes("email")) {
+        duplicatAttribute = error.message.split("email: \"")[1].split("\" }")[0];
+        duplicatkey = "email";
+      } else if (error.message.includes("userName")) {
+        duplicatAttribute = error.message.split("username: \"")[1].split("\" }")[0];
+        duplicatkey = "userName";
+      }
+
       return res.status(409)
         .send(
           {
-            message: `User alredy exists with email i.e. "${duplicateMail}" .`,
+            message: `User alredy exists with ${duplicatkey} i.e. "${duplicatAttribute}" .`,
             data: {
-              info: "Email had alredy used. i.e.",
-              email: duplicateMail
+              info: `${duplicatkey} had alredy used. i.e.`,
+              attribute: duplicatAttribute
             },
             error: error.message
           }
-        )
-        ;
+        );
     } else {
       return res.status(409).send(error.message);
     }
+  }
+}
+
+// Get Current User Details
+export async function getCurrntUserHandler(req: Request, res: Response) {
+  try {
+    var userId = await res.locals.user._id;
+    const user = await getUserbyId(userId);
+    if (!isEmpty(user)) {
+      setDevLog(filename, level.MARK, `User for Current Session Found.`);
+      return res.status(200).send({
+        message: `User for Current Session Found.`,
+        data: user
+      });
+    } else {
+      setDevLog(filename, level.WARN, `No user record available for id: ${req.params._id}`);
+      return res.status(400).send({
+        message: `No user record available for id: ${req.params._id}`,
+        data: user
+      });
+    }
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at getCurrntUserHandler is: ${error.message}`);
+    return res.status(409).send(error.message);
+  }
+}
+
+//Update Current Users Data
+export async function updateCurrentUserHandler(req: Request<any, any, CreateUserInput["body"]>, res: Response) {
+  try {
+    var userId = await res.locals.user._id;
+    const user = await updateUser(userId, req.body);
+
+    if (user.modifiedCount === 1 && user.matchedCount === 1) {
+      setDevLog(filename, level.MARK, `Current User's Data Successfully`);
+      return res.status(200).send({
+        message: `Current User's Data Successfully`,
+        data: user
+      });
+    } else if (user.matchedCount === 1 && user.modifiedCount === 0) {
+      setDevLog(filename, level.ERROR, `Unable to update Current User's data`);
+      return res.status(409).send({
+        message: `Unable to update Current User's data`,
+        data: user
+      });
+      // } else if (user.matchedCount === 0) {
+      // setDevLog(filename, level.ERROR, `No User found for current Session`);
+      //   return res.status(404).send({
+      //     message: `No User found for current Session`,
+      //     data: user
+      //   });
+    } else {
+      setDevLog(filename, level.WARN, `Error occured when updating Current user's Data`);
+      return res.status(404).send({
+        message: `Error occured when updating Current user's Data`,
+        data: user
+      });
+    }
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at updateCurrentUserHandler is: ${error.message}`);
+    return res.status(409).send(error.message);
+  }
+}
+
+//Delete Current User
+export async function deleteCurrentUserHandler(req: Request<any, any, any, UserIDInput["params"]>, res: Response) {
+  try {
+    var userId = await res.locals.user._id;
+    const user = await deleteUser(userId);
+    if (user.deletedCount === 1) {
+      setDevLog(filename, level.MARK, ` Current User deleted Successfully.`);
+      deleteUserSessionHandler(req, res);
+      return res.status(200).send({
+        message: `User with id: ${req.params._id} has deleted Successfully.`,
+        data: user
+      });
+    } else {
+      setDevLog(filename, level.ERROR, `No User found for current Session`);
+      return res.status(400).send({
+        message: `No User found for current Session`,
+        data: user
+      });
+    }
+  } catch (error: any) {
+    setDevLog(filename, level.FATAL, `Error at deleteCurrentUserHandler is: ${error.message}`);
+    return res.status(409).send(error.message);
   }
 }
 
@@ -84,30 +180,30 @@ export async function getUserbyIdHandler(req: Request<any, any, any, UserIDInput
 }
 
 //Update an User's Data
-export async function updateUserHandler(req: Request<any, any, UpdateUserInput["body"], UpdateUserInput["params"]>, res: Response) {
+export async function updateUserHandler(req: Request<any, any, UpdateUserInput["body"], UserIDInput["params"]>, res: Response) {
   try {
     const user = await updateUser(req.params._id, req.body);
 
     if (user.modifiedCount === 1 && user.matchedCount === 1) {
-    setDevLog(filename, level.MARK, `User Updated Successfully with id: ${req.params._id}`);
+      setDevLog(filename, level.MARK, `User Updated Successfully with id: ${req.params._id}`);
       return res.status(200).send({
         message: `User Updated Successfully with id: ${req.params._id}`,
         data: user
       });
     } else if (user.matchedCount === 1 && user.modifiedCount === 0) {
-    setDevLog(filename, level.ERROR, `Unable to update User with id: ${req.params._id} `);
+      setDevLog(filename, level.ERROR, `Unable to update User with id: ${req.params._id} `);
       return res.status(409).send({
         message: `Unable to update User with id: ${req.params._id}`,
         data: user
       });
     } else if (user.matchedCount === 0) {
-    setDevLog(filename, level.ERROR, `No User found with id: ${req.params._id}`);
+      setDevLog(filename, level.ERROR, `No User found with id: ${req.params._id}`);
       return res.status(404).send({
         message: `No User found with id: ${req.params._id}`,
         data: user
       });
     } else {
-    setDevLog(filename, level.WARN, `Error occured when updating user with id: ${req.params._id}`);
+      setDevLog(filename, level.WARN, `Error occured when updating user with id: ${req.params._id}`);
       return res.status(404).send({
         message: `Error occured when updating user with id: ${req.params._id}`,
         data: user
@@ -127,15 +223,15 @@ export async function deleteUserHandler(req: Request<any, any, any, UserIDInput[
   try {
     const user = await deleteUser(req.params._id);
     if (user.deletedCount === 1) {
-    setDevLog(filename, level.MARK, `User with id: ${req.params._id} has deleted Successfully.`);
-    return res.status(200).send({
+      setDevLog(filename, level.MARK, `User with id: ${req.params._id} has deleted Successfully.`);
+      return res.status(200).send({
         message: `User with id: ${req.params._id} has deleted Successfully.`,
         data: user
       });
       // return res.status(200).send(user);
       // return res.status(200).send(omit(user, "password"));
     } else {
-    setDevLog(filename, level.ERROR, `No User found with id: ${req.params._id}`);
+      setDevLog(filename, level.ERROR, `No User found with id: ${req.params._id}`);
       return res.status(400).send({
         message: `No User found with id: ${req.params._id}`,
         data: user
@@ -159,13 +255,13 @@ export async function getAllUserHandler(req: Request, res: Response) {
     // return res.status(200).send(users);
 
     if (!isEmpty(users)) {
-    setDevLog(filename, level.MARK, `Users Found.`);
-    return res.status(200).send({
-      message: `Users Found.`,
-      data: users
-    });
-    // return res.status(200).send(omit(users, "password"));
-  } else {
+      setDevLog(filename, level.MARK, `Users Found.`);
+      return res.status(200).send({
+        message: `Users Found.`,
+        data: users
+      });
+      // return res.status(200).send(omit(users, "password"));
+    } else {
       setDevLog(filename, level.WARN, `Users Found.`);
       return res.status(400).send({
         message: `No user record available.`,

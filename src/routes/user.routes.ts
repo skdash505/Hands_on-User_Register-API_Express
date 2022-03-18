@@ -17,7 +17,7 @@ import { Express, Router } from "express";
 
 // Import Essential Services
 import { validateResourses, requiresActiveUserSession } from "../middleware";
-import { createUserHandler, updateUserHandler, getAllUserHandler, getUserbyIdHandler, deleteUserHandler } from "../controllers/user.controller";
+import { createUserHandler, updateUserHandler, getAllUserHandler, getUserbyIdHandler, deleteUserHandler, getCurrntUserHandler, updateCurrentUserHandler, deleteCurrentUserHandler } from "../controllers/user.controller";
 
 // Import Essential Dto Classes ??
 
@@ -35,6 +35,26 @@ export default async function (app: Express, router: Router) {
             apiPaths._base + apiPaths.user,
             validateResourses(createUserSchema),
             createUserHandler);
+
+        // Current User Details
+        app.get(
+            apiPaths._base + apiPaths.user,
+            requiresActiveUserSession,
+            getCurrntUserHandler);
+
+        // Update User Details
+        app.put(
+            apiPaths._base + apiPaths.user,
+            requiresActiveUserSession,
+            validateResourses(UpdateUserSchema),
+            updateCurrentUserHandler);
+
+        // Delete a User
+        app.delete(
+            apiPaths._base + apiPaths.user,
+            requiresActiveUserSession,
+            validateResourses(UserIDSchema),
+            deleteCurrentUserHandler);
 
         // User Details by Id
         app.get(
@@ -56,7 +76,7 @@ export default async function (app: Express, router: Router) {
             requiresActiveUserSession,
             validateResourses(UserIDSchema),
             deleteUserHandler);
-            
+
         // Get All Users
         app.get(
             apiPaths._base + apiPaths.allUser,

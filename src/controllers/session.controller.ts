@@ -35,7 +35,7 @@ export async function createUserSessionHandler(
   // req: Request<any, any, CreateSessionInput["body"], CreateSessionInput["params"]>, 
   res: Response<any, CookiesnInput["cookies"]>, next: NextFunction) {
   try {
-    // validate the email and password
+    // validate the userName and password
     const user = await validateUser(req.body);
     if (!user) {
       setDevLog(filename, level.WARN, `Invalid username or password.`);

@@ -81,9 +81,9 @@ export async function getAllUser() {
 
 
 // Validate a User with given mail and pasword
-export async function validateUser({email, password}:{email:string, password: string}) {
+export async function validateUser({userName, password}:{userName:string, password: string}) {
   try {
-    const userDetails = await UserModel.findOne({email});
+    const userDetails = await UserModel.findOne({userName});
     if(!userDetails) return false;
     const isvalid = await userDetails.comparePassword(password);
     if(!isvalid) return false;

@@ -11,6 +11,7 @@
     "build": "echo \"Error: no build specified\" && exit 1",
     "start": "node ./src/bin/server.ts"
   },
+  "private": true,
   "dependencies": {
     "bcrypt": "^5.0.1",
     "config": "^3.3.7",
@@ -66,7 +67,9 @@
     "promise",
     "async",
     "UnhandledPromiseRejectionWarning",
-    "PromiseRejectionHandledWarning"
+    "PromiseRejectionHandledWarning",
+    "middleWare",
+    "mean Stack"
   ],
   "bugs": {
     "url": "https://github.com/skdash505/User_Register_Express.git/issues"
