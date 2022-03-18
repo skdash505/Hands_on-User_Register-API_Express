@@ -38,7 +38,7 @@ export default async function (app: Express, router: Router) {
             validateResourses(CreateSessionSchema),
             createUserSessionHandler);
 
-        // Validate a session
+        // Validate Current UserSession
         app.patch(
             apiPaths._base + apiPaths.session,
             requiresActiveUserSession,

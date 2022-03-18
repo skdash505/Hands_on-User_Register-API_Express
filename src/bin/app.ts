@@ -35,7 +35,7 @@ class App {
   private port = config.get<number>("port");
   private host = config.get<string>("host");
   private serverUrl = config.get<string>("serverUrl");
-  private apiPaths = config.get<{}>("apiPaths");
+  private apiPaths = config.get<any>("apiPaths");
   private filename = path.basename(__filename);
 
   constructor() {

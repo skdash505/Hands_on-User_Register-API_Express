@@ -2,7 +2,7 @@
 
 // Import Logging Essentials
 import path from "path";
-import { setDevLog, level, masterLog } from "../utils/log";
+import { setDevLog, level } from "../utils/log";
 const filename = path.basename(__filename);
 
 // Import Process Configuration
@@ -13,18 +13,18 @@ import setCookies from "../libs/functions/setCookies";
 
 // Import Essential Librarys
 import { Request, Response, NextFunction } from "express";
-import { isEmpty, omit } from "lodash";
+import { get } from "lodash";
 
 // Import Essential Services
 import { validateUser } from "../service/user.service";
-import { signJwt, verifyJwt } from "../utils/auth/jwt.utils";
+import { signJwt } from "../utils/auth/jwt.utils";
 import { createSession, getSessions, patchSession, updateSession } from "../service/session.service";
 
 // Import Essential Dto Classes ??
 
 // Import Required Schemas
 import { CreateSessionInput, SessionIDInput, SessionValidInput } from "../schema/session.schema";
-import { CookiesnInput, CookiesSchema } from "../schema/cookies.schema";
+import { CookiesnInput } from "../schema/cookies.schema";
 
 // Import Other ??
 
@@ -47,12 +47,12 @@ export async function createUserSessionHandler(
 
     // create access token
     const accessToken = await signJwt(
-      { ...user, session: session._id }, "accessTokenPrivateKey",
-      { expiresIn: config.get("accessTokenExp") } // in minutes
-    );
+      { ...user, session: session._id }, "accessTokenPrivateKey", config.get("accessTokenExp"));
     setCookies(filename, "accessToken", accessToken, res, next, {
-      age: config.get<number>("accessSessionExp"),
-      expaire: undefined,
+      age: undefined,
+      expaire: config.get<number>("accessSessionExp"),
+      // age: config.get<number>("accessSessionExp"),
+      // expaire: undefined,
       http: true,
       sescure: false,
       path: undefined,
@@ -61,12 +61,9 @@ export async function createUserSessionHandler(
     // create refresh token
     var refreshToken: any
     if (req.body.rememberDevice) {
-      // if (Boolean(Number(req.params.rememberDevice))) {
       refreshToken = await signJwt(
-        { ...user, session: session._id }, "refreshTokenPrivateKey",
-        { expiresIn: config.get("refreshTokenExp") } // 1 year
-      );
-      setCookies(filename, "refreshToken", accessToken, res, next, {
+        { session: session._id }, "refreshTokenPrivateKey", config.get("refreshTokenExp"));
+      setCookies(filename, "refreshToken", refreshToken, res, next, {
         age: undefined,
         expaire: config.get<number>("refreshSessionExp"),
         http: true,
@@ -76,6 +73,7 @@ export async function createUserSessionHandler(
     }
 
     // send refresh & access token back
+    setDevLog(filename, level.DEBUG, `Relation of AccessToklen and RefreshToken are ${accessToken==refreshToken}`);
     if (accessToken && refreshToken) {
       setDevLog(filename, level.MARK, `Session created SuccessFully with both Token.`);
       return res
@@ -84,7 +82,7 @@ export async function createUserSessionHandler(
           message: `Token generated Successfully`,
           data: {
             accessToken: accessToken,
-            // refreshToken: refreshToken
+            refreshToken: refreshToken
           }
         });
     } else if (accessToken && !refreshToken) {
@@ -110,16 +108,26 @@ export async function createUserSessionHandler(
   }
 }
 
-// Validate a UserSession
+// Validate Current UserSession
 export async function patchUserSessionHandler(req: Request, res: Response) {
   try {
-    const userId = await res.locals.user._id;
-    const sessions = await patchSession({ user: userId, valid: true });
-    setDevLog(filename, level.INFO, `Sessions Validated Successfully.`);
-    return res.status(200).send({
-      message: `Sessions Validated Successfully.`,
-      data: sessions
-    });
+    // const userId = await res.locals.user._id;
+    // const sessions = await getSessions({user: userId});
+    const sessionId = await res.locals.user.session;
+    const sessions = await patchSession({_id: sessionId});
+    if (sessions?.valid){
+      setDevLog(filename, level.INFO, `Sessions Validated Successfully.`);
+      return res.status(200).send({
+        message: `Sessions Validated Successfully.`,
+        data: sessions
+      });
+    } else {
+      setDevLog(filename, level.INFO, `Current user Session is invalid.`);
+      return res.status(309).send({
+        message: `Current user Session is invalid.`,
+        data: sessions
+      });
+    }
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at patchUserSessionHandler is: ${error.message}`);
     return res.status(409).send(error.message);

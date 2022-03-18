@@ -47,7 +47,7 @@ export async function createSession(userId: string, req: Request) {
 // Validate a UserSession
 export async function patchSession(query: FilterQuery<SessionDocument>) {
   try {
-    return SessionModel.find(query).lean();
+    return SessionModel.findOne(query).lean();
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at createSession is: ${error.message}`);
     throw new Error(error);
@@ -102,7 +102,8 @@ export async function getSessions(query: FilterQuery<SessionDocument>) {
 export async function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   try {
     // Get decoded Dta from Token and check for valid "ID"
-    const { decoded } = await verifyJwt(refreshToken as string, "refreshTokenPublicKey");
+    const { decoded } = await verifyJwt(
+      refreshToken as string, "refreshTokenPublicKey", config.get("refreshTokenExp"));
     if (!decoded || !get(decoded, 'session')) {
       setDevLog(filename, level.WARN, `Token Doesn't Contains Valid Data and Id`);
       return false;
@@ -125,11 +126,12 @@ export async function reIssueAccessToken({ refreshToken }: { refreshToken: strin
     }
 
     // Create A new AccessToken
-    const accessToken = await signJwt(
-      { ...user, session: session._id }, "accessTokenPrivateKey",
-      { expiresIn: config.get("accessTokenExp") } // in minutes
-    );
-    return accessToken;
+    return await signJwt(
+      { ...user, session: session._id }, "accessTokenPrivateKey", config.get("accessTokenExp"));
+      
+    // const accessToken = await signJwt(
+    //   { ...user, session: session._id }, "accessTokenPrivateKey", config.get("accessTokenExp"));
+    // return accessToken;
 
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at createSession is: ${error.message}`);

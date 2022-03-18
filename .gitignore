@@ -50,6 +50,7 @@ testem.log
 
 #Key files
 *.key
+*.pem
 
 # System Files
 .DS_Store

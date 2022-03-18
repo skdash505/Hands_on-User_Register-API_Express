@@ -24,12 +24,13 @@ export default {
   saltWorkFactor: 10,
 
   // Tokens Expairation Time
-  accessTokenExp: -1, // in minutes
-  // accessTokenExp: "15min", // in minutes
+  // accessTokenExp: -1, // in minutes
+  accessTokenExp: "5min", // in minutes
   refreshTokenExp: "30d", // in Days
 
   // Tokens Session Time
-  accessSessionExp: 30, // in minutes
+  accessSessionExp: 30, // in Days
+  // accessSessionExp: 30, // in minutes
   refreshSessionExp: 30, // in Days
 
   // Access key for Token (Encoded)
@@ -42,12 +43,12 @@ export default {
 
 
   // Path to Access key for Token (Plain)
-  accessTokenPrivateKeyPath: path.join(__dirname, '../resource/key/id_rsa_access_per.key'),
-  accessTokenPublicKeyPath: path.join(__dirname, '../resource/key/id_rsa_access_pub.key'),
+  accessTokenPrivateKeyPath: path.join(__dirname, '../resource/key/id_rsa_access_per.pem'),
+  accessTokenPublicKeyPath: path.join(__dirname, '../resource/key/id_rsa_access_pub.pem'),
 
   // Path to Refresh key for Token (Plain)
-  refreshTokenPrivateKeyPath: path.join(__dirname, '../resource/key/id_rsa_refresh_per.key'),
-  refreshTokenPublicKeyPath: path.join(__dirname, '../resource/key/id_rsa_refresh_pub.key'),
+  refreshTokenPrivateKeyPath: path.join(__dirname, '../resource/key/id_rsa_refresh_per.pem'),
+  refreshTokenPublicKeyPath: path.join(__dirname, '../resource/key/id_rsa_refresh_pub.pem'),
 
   // 
 }

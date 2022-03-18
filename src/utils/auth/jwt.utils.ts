@@ -26,17 +26,21 @@ import { validatedToken } from "../../libs/classes/validatedToken";
 export async function signJwt(
   object: Object,
   keyName: "accessTokenPrivateKey" | "refreshTokenPrivateKey",
-  options?: jwt.SignOptions | undefined
+  exp: string | number
 ): Promise<string | undefined> {
 
   const perKey = await readKey(keyName);
+  const signOptions: jwt.SignOptions ={
+    // issuer: "santanu",
+    // subject: "dev",
+    // audience: "local",
+    expiresIn: exp,
+    algorithm: "RS256"
+  }
 
   // Cerate Token with Private key
   try {
-    const signToken = jwt.sign(object, perKey, {
-      ...(options && options),
-      algorithm: 'RS256'
-    });
+    const signToken = jwt.sign(object, perKey, {...signOptions});
     setDevLog(filename, level.MARK, `jwt Token Created successfully`);
     return signToken;
   } catch (error: any) {
@@ -49,13 +53,21 @@ export async function signJwt(
 export async function verifyJwt(
   token: string,
   keyName: "accessTokenPublicKey" | "refreshTokenPublicKey",
-  options?: jwt.VerifyOptions): Promise<validatedToken> {
+  age: string | number): Promise<validatedToken> {
 
   const pubKey = await readKey(keyName);
+  const verifyOptions: jwt.VerifyOptions ={
+    // issuer: "santanu",
+    // subject: "dev",
+    // audience: "local",
+    maxAge: age,
+    algorithms: ["RS256"]
+  }
 
   // Verify Token with Public key
   try {
-    const decoded = jwt.verify(token, pubKey, { algorithms: ['RS256'] });
+    const decoded = jwt.verify(token, pubKey);
+    // const decoded = jwt.verify(token, pubKey, {...verifyOptions});
     setDevLog(filename, level.MARK, `jwt Token Verified successfully`);
     return { valid: true, expired: false, decoded };
   } catch (error: any) {
@@ -82,12 +94,10 @@ async function readKey(keyName: string): Promise<string> {
   // });
   // return key;
 
-  // Read the Key from Plain Key File
-  const keyFile = config.get<string>(keyName + "Path");
-  return  readFileSync(keyFile).toString();
+  // // Read the Key from Plain Key File
+  // return readFileSync(config.get<string>(keyName + "Path"), "utf8").toString();
 
   // Read the pubKey from sourse Encoded
-  // return Buffer.from(config.get<string>(keyName), "base64").toString(
-  //   "ascii"
-  // );
+  return atob(process.env[config.get<string>(keyName)] || "");
+  // console.log(atob(process.env[config.get<string>(keyName)] || ""));
 }

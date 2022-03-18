@@ -36,7 +36,7 @@ export default async function (app: Express, router: Router) {
             validateResourses(createUserSchema),
             createUserHandler);
 
-        // All user Details by Id
+        // User Details by Id
         app.get(
             apiPaths._base + apiPaths.user_with_id,
             requiresActiveUserSession,

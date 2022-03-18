@@ -30,6 +30,7 @@ const validateUserSession = async (
     // Get Tokens from Session
     const accessToken = req.cookies.accessToken;
     const refreshToken = req.cookies.refreshToken;
+    setDevLog(filename, level.DEBUG, `Relation of AccessToklen and RefreshToken are ${accessToken==refreshToken}`);
 
     // const accessToken_cookies = req.cookies.accessToken;
     // const refreshToken_cookies = req.cookies.refreshToken;
@@ -52,7 +53,9 @@ const validateUserSession = async (
 
 
     // Verify AccessToken
-    const { decoded, expired } = await verifyJwt(accessToken as string, "accessTokenPublicKey");
+    const { decoded, expired } = await verifyJwt(
+      accessToken as string, "accessTokenPublicKey", config.get("accessTokenExp"));
+      // refreshToken as string, "refreshTokenPublicKey", config.get("refreshTokenExp"));
     if (decoded) {
       // Set decoded User data in Local Response;
       res.locals.user = decoded;
@@ -70,16 +73,19 @@ const validateUserSession = async (
         // res.setHeader("x-access-token", newAccessToken);
 
         // Add the new accessToken to the response Cookies
-        setCookies(filename, "accessToken", accessToken, res, next, {
-          age: config.get<number>("accessSessionExp"),
-          expaire: undefined,
+        setCookies(filename, "accessToken", newAccessToken, res, next, {
+          age: undefined,
+          expaire: config.get<number>("accessSessionExp"),
+          // age: config.get<number>("accessSessionExp"),
+          // expaire: undefined,
           http: true,
           sescure: false,
           path: undefined,
         });
 
         // Get Decoded Data from new accessToken
-        const { decoded } = await verifyJwt(newAccessToken as string, "accessTokenPublicKey");
+        const { decoded } = await verifyJwt(
+          newAccessToken as string, "accessTokenPublicKey", config.get("accessTokenExp"));
         // Set decoded User data in Local Response;
         res.locals.user = decoded;
 
