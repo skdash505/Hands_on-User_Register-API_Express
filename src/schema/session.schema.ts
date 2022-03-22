@@ -16,7 +16,7 @@ import { any, boolean, object, string, TypeOf } from "zod";
 export const CreateSessionSchema = object({
     body: object({
         userName: string({
-            required_error: "E-mail is required"
+            required_error: "User Name is required"
         }),
         password: string({
             required_error: "Password is required"
