@@ -57,8 +57,11 @@ class App {
     try {
       setDevLog(this.filename, level.TRACE, "Stup MiddleWare Started.");
       // Using Express's MiddleWares
+      //  // parse application/json
       this.Server.use(express.json());
+      // // parse application/x-www-form-urlencoded
       this.Server.use(express.urlencoded({ extended: false }));
+      
       // Import and use MiddleWares
       this.Server.use(require('cookie-parser')());
       this.Server.use(require('cors')());
