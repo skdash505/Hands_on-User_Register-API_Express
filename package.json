@@ -12,6 +12,9 @@
     "start": "node ./src/bin/server.ts"
   },
   "private": true,
+  "engines": {
+    "node": "16.13.0"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "config": "^3.3.7",
