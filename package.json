@@ -7,9 +7,16 @@
   "scripts": {
     "dev": "nodemon --config nodemon.json src/bin/server.ts",
     "debug": "nodemon --config nodemon.json --inspect ./src/bin/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo \"Error: no build specified\" && exit 1",
-    "start": "node ./src/bin/server.ts"
+
+    "build_failed": "echo \"Error: no build specified\" && exit 1",
+    "start_d": "node ./src/bin/server.ts",
+
+    "clean": "rimraf dist/*",
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "tsc": "tsc --project ./",
+    "start": "node dist/src/bin/server.js",
+    "build": "yarn clean && yarn tsc && yarn start",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
   "engines": {
@@ -19,7 +26,7 @@
     "bcrypt": "^5.0.1",
     "config": "^3.3.7",
     "cookie-parser": "~1.4.4",
-    "cors": "^2.8.5", 
+    "cors": "^2.8.5",
     "dayjs": "^1.10.7",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
@@ -56,7 +63,8 @@
     "@types/yup": "^0.29.13",
     "concurrently": "^7.0.0",
     "nodemon": "^2.0.15",
-    "ts-node": "^10.5.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
     "tslib": "^2.3.1",
     "typescript": "^4.5.5"
   },
