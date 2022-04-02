@@ -24,7 +24,7 @@ const requiredSelfUser = (
   next: NextFunction
 ) => {
   try {
-      
+
     return next();
 } catch (error: any) {
   setDevLog(filename, level.FATAL, `Error at requiredSelfUser is: ${error.message}`);

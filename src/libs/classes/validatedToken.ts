@@ -1,4 +1,4 @@
-//src/libs/classes/validatedToken.ts
+// src/libs/classes/validatedToken.ts
 
 
 // Import Logging Essentials
@@ -19,7 +19,7 @@ import { Jwt, JwtPayload } from "jsonwebtoken";
 
 
 /// <reference types="node" />
-export interface validatedToken {    
+export interface validatedToken {
     valid: boolean;
     expired: boolean;
     decoded: Jwt | JwtPayload | string | null;

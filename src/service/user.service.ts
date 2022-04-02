@@ -48,28 +48,28 @@ export async function getUserbyId(_id: string) {
   }
 }
 
-//Update an User's Data
+// Update an User's Data
 export async function updateUser(_id: string, input: DocumentDefinition<UserInputs>) {
 // export async function updateUser(_id: string, input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt' | "comparePassword">>) {
   try {
-    return await UserModel.updateOne({_id: _id}, input);
+    return await UserModel.updateOne({_id}, input);
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at updateUser is: ${error.message}`);
     throw new Error(error);
   }
 }
 
-//Delete or remove a User
+// Delete or remove a User
 export async function deleteUser(_id: string) {
   try {
-    return await UserModel.deleteOne({_id:_id});
+    return await UserModel.deleteOne({_id});
   } catch (error: any) {
     setDevLog(filename, level.FATAL, `Error at deleteUser is: ${error.message}`);
     throw new Error(error);
   }
 }
 
-//Get All User
+// Get All User
 export async function getAllUser() {
   try {
     return await UserModel.find().select(["-password", "-__v"]);

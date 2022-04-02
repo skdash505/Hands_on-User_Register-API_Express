@@ -8,7 +8,7 @@ import path from 'path';
 import { setDevLog, masterLog, level } from "../utils/log";
 const filename = path.basename(__filename);
 
-//Starting the Node Server 
+// Starting the Node Server
 const server = new app().startServer()
   .then(port => (setDevLog(filename, level.DEBUG, `Server running on port ${port}`)))
   .catch(error => {

@@ -4,7 +4,7 @@
 import path from "path";
 
 // Import Process Configuration
-var loggerPath = require('config').loggerPath;
+const loggerPath = require('config').loggerPath;
 // import config from "config";
 // var loggerPath = config.get<"">("loggerPath");
 
@@ -70,7 +70,7 @@ export function setDevLog(fileName: string, type: Level, messages: any) {
     }
 }
 
-var fileLog: any;
+let fileLog: any;
 export function creatFileLog(fileName: string) {
     try {
         // let refined_fileName = fileName.replace(".ts","");

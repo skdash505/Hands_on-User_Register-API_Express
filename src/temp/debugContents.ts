@@ -87,11 +87,11 @@ export default async (app: Express) => {
     // // encode and decode
     // let keyName = "accessTokenPublicKey";
     // console.log(atob(process.env[config.get<string>(keyName)] || ""));
-    // let keySetName = config.get<string>(keyName);    
+    // let keySetName = config.get<string>(keyName);
     // var encodedStringAtoB = process.env[keySetName] || "";
     // var decodedStringAtoB = atob(encodedStringAtoB);
     // console.log(decodedStringAtoB);
-    
+
 
 
 }

@@ -36,7 +36,7 @@ export default async (
 ) => {
 
     if (!value) return next();
-    var option: CookieOptions = {}
+    const option: CookieOptions = {}
     // var cookiesOption: {
     //     maxAge?: number,
     //     expires?: Date,

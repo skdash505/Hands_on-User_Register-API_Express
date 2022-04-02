@@ -32,7 +32,7 @@ import { CookiesnInput } from "../schema/cookies.schema";
 // Create a UserSession
 export async function createUserSessionHandler(
   req: Request<any, any, CreateSessionInput["body"]>,
-  // req: Request<any, any, CreateSessionInput["body"], CreateSessionInput["params"]>, 
+  // req: Request<any, any, CreateSessionInput["body"], CreateSessionInput["params"]>,
   res: Response<any, CookiesnInput["cookies"]>, next: NextFunction) {
   try {
     // validate the userName and password
@@ -59,7 +59,7 @@ export async function createUserSessionHandler(
     });
 
     // create refresh token
-    var refreshToken: any
+    let refreshToken: any
     if (req.body.rememberDevice) {
       refreshToken = await signJwt(
         { session: session._id }, "refreshTokenPrivateKey", config.get("refreshTokenExp"));
@@ -73,7 +73,7 @@ export async function createUserSessionHandler(
     }
 
     // send refresh & access token back
-    setDevLog(filename, level.DEBUG, `Relation of AccessToklen and RefreshToken are ${accessToken==refreshToken}`);
+    setDevLog(filename, level.DEBUG, `Relation of AccessToklen and RefreshToken are ${accessToken === refreshToken}`);
     if (accessToken && refreshToken) {
       setDevLog(filename, level.MARK, `Session created SuccessFully with both Token.`);
       return res
@@ -81,8 +81,8 @@ export async function createUserSessionHandler(
         .send({
           message: `Token generated Successfully`,
           data: {
-            accessToken: accessToken,
-            refreshToken: refreshToken
+            accessToken,
+            refreshToken
           }
         });
     } else if (accessToken && !refreshToken) {
@@ -92,7 +92,7 @@ export async function createUserSessionHandler(
         .send({
           message: `Token generated Successfully`,
           data: {
-            accessToken: accessToken
+            accessToken
           }
         });
     } else {

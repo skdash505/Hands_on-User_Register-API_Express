@@ -23,8 +23,7 @@ import { validatedToken } from "../../libs/classes/validatedToken";
 // CORS Filter
 export default async function () {
   try {
-    
-    
+
     return "";
   } catch (error: any) {
     setDevLog(filename, level.ERROR, `Error at corsFilter is ${error}`);

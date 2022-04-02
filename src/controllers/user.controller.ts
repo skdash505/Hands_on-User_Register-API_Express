@@ -72,7 +72,7 @@ export async function createUserHandler(req: Request<any, any, CreateUserInput["
 // Get Current User Details
 export async function getCurrntUserHandler(req: Request, res: Response) {
   try {
-    var userId = await res.locals.user._id;
+    const userId = await res.locals.user._id;
     const user = await getUserbyId(userId);
     if (!isEmpty(user)) {
       setDevLog(filename, level.MARK, `User for Current Session Found.`);
@@ -93,10 +93,10 @@ export async function getCurrntUserHandler(req: Request, res: Response) {
   }
 }
 
-//Update Current Users Data
+// Update Current Users Data
 export async function updateCurrentUserHandler(req: Request<any, any, CreateUserInput["body"]>, res: Response) {
   try {
-    var userId = await res.locals.user._id;
+    const userId = await res.locals.user._id;
     const user = await updateUser(userId, req.body);
 
     if (user.modifiedCount === 1 && user.matchedCount === 1) {
@@ -130,10 +130,10 @@ export async function updateCurrentUserHandler(req: Request<any, any, CreateUser
   }
 }
 
-//Delete Current User
+// Delete Current User
 export async function deleteCurrentUserHandler(req: Request<any, any, any, UserIDInput["params"]>, res: Response) {
   try {
-    var userId = await res.locals.user._id;
+    const userId = await res.locals.user._id;
     const user = await deleteUser(userId);
     if (user.deletedCount === 1) {
       setDevLog(filename, level.MARK, ` Current User deleted Successfully.`);
@@ -179,7 +179,7 @@ export async function getUserbyIdHandler(req: Request<any, any, any, UserIDInput
   }
 }
 
-//Update an User's Data
+// Update an User's Data
 export async function updateUserHandler(req: Request<any, any, UpdateUserInput["body"], UserIDInput["params"]>, res: Response) {
   try {
     const user = await updateUser(req.params._id, req.body);
@@ -218,7 +218,7 @@ export async function updateUserHandler(req: Request<any, any, UpdateUserInput["
   }
 }
 
-//Delete or remove a User
+// Delete or remove a User
 export async function deleteUserHandler(req: Request<any, any, any, UserIDInput["params"]>, res: Response) {
   try {
     const user = await deleteUser(req.params._id);
@@ -243,7 +243,7 @@ export async function deleteUserHandler(req: Request<any, any, any, UserIDInput[
   }
 }
 
-//Get All User
+// Get All User
 export async function getAllUserHandler(req: Request, res: Response) {
   try {
     const users = await getAllUser();

@@ -14,7 +14,7 @@ export default function (app: Express) {
 		// // allow overriding methods in query (?_method=put)
 		// var methodOverride = require('method-override');
 		// app.use(methodOverride('_method'));
-		
+
 	} catch (error: any) {
 		masterLog.fatal(`Error at catchError is: ${error.message}`);
 		throw new Error(error);

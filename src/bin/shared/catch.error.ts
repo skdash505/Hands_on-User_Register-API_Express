@@ -20,7 +20,7 @@ export default function (app: Express) {
     //   res.status(404).render('4xx', { url: req.originalUrl });
     // });
 
-    var createError = require('http-errors');
+    const createError = require('http-errors');
 
     // catch 404 and forward to error handler
     app.use(function (req: Request, res: Response, next: NextFunction) {

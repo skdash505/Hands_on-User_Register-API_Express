@@ -30,7 +30,7 @@ const validateUserSession = async (
     // Get Tokens from Session
     const accessToken = req.cookies.accessToken;
     const refreshToken = req.cookies.refreshToken;
-    setDevLog(filename, level.DEBUG, `Relation of AccessToklen and RefreshToken are ${accessToken==refreshToken}`);
+    setDevLog(filename, level.DEBUG, `Relation of AccessToklen and RefreshToken are ${accessToken === refreshToken}`);
 
     // const accessToken_cookies = req.cookies.accessToken;
     // const refreshToken_cookies = req.cookies.refreshToken;
@@ -67,7 +67,7 @@ const validateUserSession = async (
     if (expired && refreshToken) {
       const newAccessToken = await reIssueAccessToken({ refreshToken });
 
-      //Check newAccessoken
+      // Check newAccessoken
       if (newAccessToken) {
         // Add the new access token to the response header
         // res.setHeader("x-access-token", newAccessToken);

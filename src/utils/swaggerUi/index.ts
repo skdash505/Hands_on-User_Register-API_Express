@@ -6,7 +6,7 @@ import { setDevLog, masterLog, level } from "../../utils/log";
 const filename = path.basename(__filename);
 
 // Import Process Configuration
-var apiPaths = require('config').apiPaths;
+const apiPaths = require('config').apiPaths;
 // import config from "config";
 // const apiPaths = config.get<{}>("apiPaths");
 
@@ -62,7 +62,7 @@ function setupSwaggerUi(app: Express, serverUrl: string) {
 
 
     const swaggerOptions = require("./app.swaggerUI.json");
-    let serverBasePath = `${apiPaths._base}`;
+    const serverBasePath = `${apiPaths._base}`;
     // let serverBaseUrl = `${serverUrl}${apiPaths._base}`;
     swaggerOptions.host = serverUrl;
     swaggerOptions.basePath = serverBasePath;

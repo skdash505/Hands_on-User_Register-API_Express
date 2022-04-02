@@ -23,7 +23,7 @@ import mongoose from "mongoose";
 function connect() {
   try {
     //   const dbUri = config.dbUri as string;
-    const dbUri = config.get<string>("dbUri");
+    const dbUri = process.env.dbUri || config.get<string>("dbUri");
 
     return mongoose
       .connect(dbUri, {

@@ -1,17 +1,17 @@
 // src/bin/app.ts
 
-// import Express and Http server 
+// import Express and Http server
 import express, { Express, Router } from "express";
 import http from "http";
 
-//Import Debug components
+// Import Debug components
 import debugerComp from "../temp/debugContents";
 
 // Import Essential Package
 import path from "path";
 // Import and use Logger Scripts
 import { setDevLog, level } from "../utils/log";
-//Import Process Configuration
+// Import Process Configuration
 import config from "config";
 import dotenv from "dotenv";
 dotenv.config();
@@ -19,7 +19,7 @@ dotenv.config();
 // Import Custom MiddleWares
 import { validateUserSession } from "../middleware";
 
-//Import Essential components
+// Import Essential components
 import swaggerDocs from "../utils/swaggerUi";
 import connect from "../utils/db/connect";
 import Routers from "../routes/index.routes";
@@ -31,11 +31,11 @@ import temp from "./shared/temp.shared";
 class App {
   private Server: any;
   private Router: any;
-  private protocol = config.get<string>("protocol");
-  private port = config.get<number>("port");
-  private host = config.get<string>("host");
-  private serverUrl = config.get<string>("serverUrl");
-  private apiPaths = config.get<any>("apiPaths");
+  private protocol: string = process.env.protocol || config.get<string>("protocol");
+  private port: number = Number(process.env.PORT) || config.get<number>("port");
+  private host: string = process.env.HOST || config.get<string>("host");
+  private serverUrl: string = process.env.URL || config.get<string>("serverUrl");
+  private apiPaths: {} = config.get<any>("apiPaths");
   private filename = path.basename(__filename);
 
   constructor() {
@@ -43,11 +43,11 @@ class App {
     this.Server = express()
     this.Router = Router()
 
-    //Debug some content
+    // Debug some content
     debugerComp(this.Server);
-    
+
     setDevLog(this.filename, level.INFO, `\n\n\t\t\t\t\t\tExpress App initiated.`);
-    
+
     // Initiating Middlewares
     this.setupMiddleware();
     // this.setupServer();
@@ -61,7 +61,7 @@ class App {
       this.Server.use(express.json());
       // // parse application/x-www-form-urlencoded
       this.Server.use(express.urlencoded({ extended: false }));
-      
+
       // Import and use MiddleWares
       this.Server.use(require('cookie-parser')());
       this.Server.use(require('cors')());
@@ -81,7 +81,7 @@ class App {
     try {
       setDevLog(this.filename, level.TRACE, "Starting the Server.");
       return new Promise((resolve, reject) => {
-        var server = http.createServer(this.Server);
+        const server = http.createServer(this.Server);
         // Listen on provided port, on all network interfaces.
         server.listen(
           this.port, this.host,
@@ -91,8 +91,8 @@ class App {
           })
           // Event listener for HTTP server "listening" event.
           .on('listening', () => {
-            var addr = server.address() || { port: Number };
-            var bind = typeof addr === 'string'
+            const addr = server.address() || { port: Number };
+            const bind = typeof addr === 'string'
               ? 'pipe ' + addr
               : 'port ' + addr.port;
             setDevLog(this.filename, level.TRACE, `Listening on ${bind}`);
@@ -105,7 +105,7 @@ class App {
               reject(error);
               // throw error;
             }
-            var bind = typeof this.port === 'string'
+            const bind = typeof this.port === 'string'
               ? 'Pipe ' + this.port
               : 'Port ' + this.port;
             // handle specific listen errors with friendly messages
@@ -143,19 +143,19 @@ class App {
       this.Server.set('views', path.join(__dirname, './views'));
       this.Server.set('view engine', 'pug');
 
-      //Some essential middleware used
+      // Some essential middleware used
       await temp(this.Server);
 
       // Connection to Database established
       await connect();
 
-      //All end points atteched as Router
+      // All end points atteched as Router
       await Routers(this.Server, this.Router);
 
-      //SwaggerUi initalized
+      // SwaggerUi initalized
       await swaggerDocs(this.Server, this.serverUrl);
 
-      //Handel unavailable End-Points
+      // Handel unavailable End-Points
       await catchError(this.Server);
 
       setDevLog(this.filename, level.INFO, "Server Setup Done.");

@@ -6,7 +6,7 @@ import { setDevLog, level, masterLog } from "../utils/log";
 const filename = path.basename(__filename);
 
 // Import Process Configuration
-var apiPaths = require('config').apiPaths;
+const apiPaths = require('config').apiPaths;
 // import config from "config";
 // var apiPaths = config.get<{}>("apiPaths");
 

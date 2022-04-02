@@ -24,7 +24,7 @@ const requiredAdminAccess = (
   next: NextFunction
 ) => {
   try {
-      
+
     return next();
 } catch (error: any) {
   setDevLog(filename, level.FATAL, `Error at requiredAdminAccess is: ${error.message}`);

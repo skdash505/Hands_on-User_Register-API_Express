@@ -128,7 +128,7 @@ export async function reIssueAccessToken({ refreshToken }: { refreshToken: strin
     // Create A new AccessToken
     return await signJwt(
       { ...user, session: session._id }, "accessTokenPrivateKey", config.get("accessTokenExp"));
-      
+
     // const accessToken = await signJwt(
     //   { ...user, session: session._id }, "accessTokenPrivateKey", config.get("accessTokenExp"));
     // return accessToken;

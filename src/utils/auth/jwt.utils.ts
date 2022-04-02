@@ -22,9 +22,9 @@ import { validatedToken } from "../../libs/classes/validatedToken";
 // Import Other ??
 
 
-//Create JWT Token
+// Create JWT Token
 export async function signJwt(
-  object: Object,
+  object: object,
   keyName: "accessTokenPrivateKey" | "refreshTokenPrivateKey",
   exp: string | number
 ): Promise<string | undefined> {
@@ -49,7 +49,7 @@ export async function signJwt(
   }
 }
 
-//Validate JWT Token
+// Validate JWT Token
 export async function verifyJwt(
   token: string,
   keyName: "accessTokenPublicKey" | "refreshTokenPublicKey",

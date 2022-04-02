@@ -30,7 +30,7 @@ export interface SessionInputs {
   userAgent: string;
   rememberDevice: boolean;
 }
-export interface SessionDocument extends SessionInputs, mongoose.Document {  
+export interface SessionDocument extends SessionInputs, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
