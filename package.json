@@ -18,6 +18,8 @@
   "private": true,
   "engines": {
     "node": "16.13.0",
+    "npm": "8.1.0",
+    "npx": "8.1.0",
     "jest-cli": "^27.5.1"
   },
   "dependencies": {
