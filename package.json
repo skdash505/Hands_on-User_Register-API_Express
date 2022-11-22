@@ -1,5 +1,5 @@
 {
-  "name": "userregister",
+  "name": "user_register-API_Express ",
   "packageManager": "yarn@3.2.0",
   "version": "1.0.0",
   "description": "User Register's Server Side application as MEAN Stack.",
