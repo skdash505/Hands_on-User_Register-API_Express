@@ -1,5 +1,4 @@
 @skdash505 
-"D:\Santanu\Project of Coading\Hands_on-UserRegister\User_Register-API_Express\README.md"
 # UserRegister
 
 This project was generated with [Node](https://github.com/nodejs/node.git) version 16.13.0.
